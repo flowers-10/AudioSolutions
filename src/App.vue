@@ -5,107 +5,126 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
-import testVertexShader from './shaders/test/vertex.glsl'
-import testFragmentShader from './shaders/test/fragment.glsl'
+import { onMounted } from "vue";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import * as dat from "lil-gui";
+import testVertexShader from "./shaders/test/vertex.glsl";
+import testFragmentShader from "./shaders/test/fragment.glsl";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 onMounted(() => {
   /**
-* Base
-*/
-// Debug
-const gui = new dat.GUI()
+   * Base
+   */
+  // Debug
+  const gui = new dat.GUI();
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
+  // Canvas
+  const canvas = document.querySelector("canvas.webgl");
 
-// Scene
-const scene = new THREE.Scene()
+  // Scene
+  const scene = new THREE.Scene();
 
-/**
- * Test mesh
- */
-// Geometry
-const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
+  /**
+   * Models
+   */
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("./static/draco/");
 
-// Material
-const material = new THREE.ShaderMaterial({
-  vertexShader: testVertexShader,
-  fragmentShader: testFragmentShader,
-  side: THREE.DoubleSide
-})
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader);
 
-// Mesh
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
+  gltfLoader.load("./static/models/mountain/paints.glb", (glb) => {
+    console.log(glb, 123213);
+    scene.add(glb.scene)
+  });
+  /**
+   * Test mesh
+   */
+  // Geometry
+  const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
 
-/**
- * Sizes
- */
-const sizes = {
-  width: window.innerWidth,
-  height: window.innerHeight
-}
+  // Material
+  const material = new THREE.ShaderMaterial({
+    vertexShader: testVertexShader,
+    fragmentShader: testFragmentShader,
+    side: THREE.DoubleSide,
+  });
 
-window.addEventListener('resize', () => {
-  // Update sizes
-  sizes.width = window.innerWidth
-  sizes.height = window.innerHeight
+  // Mesh
+  const mesh = new THREE.Mesh(geometry, material);
+  // scene.add(mesh);
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height
-  camera.updateProjectionMatrix()
+  // light
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
+  /**
+   * Sizes
+   */
+  const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
+  window.addEventListener("resize", () => {
+    // Update sizes
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
 
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(0.25, - 0.25, 1)
-scene.add(camera)
+    // Update camera
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  });
 
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-  canvas: canvas
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  /**
+   * Camera
+   */
+  // Base camera
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
+  );
+  camera.position.set(0.25, -0.25, 1);
+  scene.add(camera);
 
-/**
- * Animate
- */
-const tick = () => {
-  // Update controls
-  controls.update()
+  // Controls
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
 
-  // Render
-  renderer.render(scene, camera)
+  /**
+   * Renderer
+   */
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+  });
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick)
-}
+  /**
+   * Animate
+   */
+  const tick = () => {
+    // Update controls
+    controls.update();
 
-tick()
+    // Render
+    renderer.render(scene, camera);
 
-})
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick);
+  };
 
-
+  tick();
+});
 </script>
-
 
 <style scoped>
 * {
