@@ -13,6 +13,7 @@ import testVertexShader from "./shaders/test/vertex.glsl";
 import testFragmentShader from "./shaders/test/fragment.glsl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { changeMaterial, modifyMaterial } from './utils/MaterialUtils/MaterialUtils';
 
 onMounted(() => {
   /**
@@ -36,30 +37,28 @@ onMounted(() => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
 
-  gltfLoader.load("./static/models/mountain/paints.glb", (glb) => {
-    console.log(glb, 123213);
-    scene.add(glb.scene)
-  });
-  /**
-   * Test mesh
-   */
-  // Geometry
-  const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
-
-  // Material
-  const material = new THREE.ShaderMaterial({
-    vertexShader: testVertexShader,
-    fragmentShader: testFragmentShader,
-    side: THREE.DoubleSide,
+  let mixer = null
+  gltfLoader.load("./static/models/mountain/mountains.glb", (gltf) => {
+    console.log(gltf, 123213);
+    const model = gltf.scene;
+    changeMaterial(model, THREE.MeshBasicMaterial);
+    scene.add(model)
   });
 
-  // Mesh
-  const mesh = new THREE.Mesh(geometry, material);
-  // scene.add(mesh);
 
-  // light
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(ambientLight);
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+  scene.add(ambientLight);
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.set(1024, 1024);
+  directionalLight.shadow.camera.far = 15;
+  directionalLight.shadow.camera.left = -7;
+  directionalLight.shadow.camera.top = 7;
+  directionalLight.shadow.camera.right = 7;
+  directionalLight.shadow.camera.bottom = -7;
+  directionalLight.position.set(5, 5, 5);
+  scene.add(directionalLight);
   /**
    * Sizes
    */
@@ -90,20 +89,21 @@ scene.add(ambientLight);
     75,
     sizes.width / sizes.height,
     0.1,
-    100
+    1000
   );
-  camera.position.set(0.25, -0.25, 1);
+  camera.position.set(20, 20, 152);
   scene.add(camera);
 
   // Controls
-  const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true;
+  // const controls = new OrbitControls(camera, canvas as HTMLElement);
+  // controls.target.set(0, 0.75, 0);
+  // controls.enableDamping = true;
 
   /**
    * Renderer
    */
   const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
+    canvas: canvas as HTMLElement,
   });
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -113,7 +113,7 @@ scene.add(ambientLight);
    */
   const tick = () => {
     // Update controls
-    controls.update();
+    // controls.update();
 
     // Render
     renderer.render(scene, camera);
