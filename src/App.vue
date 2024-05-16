@@ -14,7 +14,7 @@ import testFragmentShader from "./shaders/test/fragment.glsl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { changeMaterial, modifyMaterial } from './utils/MaterialUtils/MaterialUtils';
-
+import { modifyShader } from './utils/ShaderUtils/ShaderUtils';
 onMounted(() => {
   /**
    * Base
@@ -27,6 +27,27 @@ onMounted(() => {
 
   // Scene
   const scene = new THREE.Scene();
+
+  // fog
+
+  const fogPar = {
+    fogColor: { type: <"color">"color", value: "#ffffff" },
+    bottomY: { type: <"number">"number", value: -5, min: -5, max: 30, step: 0.01 },
+    topY: { type: <"number">"number", value: 40, min: 0, max: 80, step: 0.01 },
+  }
+
+  // 描边参数
+  const strokePar = {
+    strokeColor: { type: <"color">"color", value: "#666666" },
+    strokeThickness: { type: <"number">"number", value: 0.5, min: 0, max: 2, step: 0.01 },
+  }
+  const uniforms = {
+    u_fogColor: { value: new THREE.Color(fogPar.fogColor.value) },
+    u_bottomY: { value: fogPar.bottomY.value },
+    u_topY: { value: fogPar.topY.value },
+    u_stroke_color: { value: new THREE.Color(strokePar.strokeColor.value) },
+    u_stroke_thickness: { value: strokePar.strokeThickness.value },
+  }
 
   /**
    * Models
@@ -42,23 +63,20 @@ onMounted(() => {
     console.log(gltf, 123213);
     const model = gltf.scene;
     changeMaterial(model, THREE.MeshBasicMaterial);
+    const { u_fogColor, u_bottomY, u_topY } = uniforms;
+    modifyShader(model, [
+            {
+                type: "heightFog",
+                uniforms: { u_HeightFogColor: u_fogColor, u_HeightFogBottomY: u_bottomY, u_HeightFogTopY: u_topY, }
+            },
+        ])
     scene.add(model)
   });
 
 
   // Lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.set(1024, 1024);
-  directionalLight.shadow.camera.far = 15;
-  directionalLight.shadow.camera.left = -7;
-  directionalLight.shadow.camera.top = 7;
-  directionalLight.shadow.camera.right = 7;
-  directionalLight.shadow.camera.bottom = -7;
-  directionalLight.position.set(5, 5, 5);
-  scene.add(directionalLight);
+
   /**
    * Sizes
    */
@@ -95,9 +113,9 @@ onMounted(() => {
   scene.add(camera);
 
   // Controls
-  // const controls = new OrbitControls(camera, canvas as HTMLElement);
-  // controls.target.set(0, 0.75, 0);
-  // controls.enableDamping = true;
+  const controls = new OrbitControls(camera, canvas as HTMLElement);
+  controls.target.set(0, 0.75, 0);
+  controls.enableDamping = true;
 
   /**
    * Renderer
@@ -113,7 +131,7 @@ onMounted(() => {
    */
   const tick = () => {
     // Update controls
-    // controls.update();
+    controls.update();
 
     // Render
     renderer.render(scene, camera);

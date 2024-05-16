@@ -1,0 +1,1 @@
+varying float v_stroke;
