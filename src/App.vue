@@ -1,11 +1,16 @@
 <template>
-  <div>
+  <div
+    @mousedown="goState = true"
+    @mouseup="goState = false"
+    @touchstart="goState = true"
+    @touchend="goState = false"
+  >
     <canvas class="webgl"></canvas>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
@@ -18,6 +23,8 @@ import {
   modifyMaterial,
 } from "./utils/MaterialUtils/MaterialUtils";
 import { modifyShader } from "./utils/ShaderUtils/ShaderUtils";
+
+const goState = ref(false);
 onMounted(() => {
   /**
    * Base
@@ -233,9 +240,12 @@ onMounted(() => {
     const deltaTime = elapsedTime - previousTime;
     previousTime = elapsedTime;
     // Update controls
-    controls.update();
-    if (cameraMixer) {
-      // cameraMixer.update(deltaTime);
+    // controls.update();
+    
+    if (cameraMixer && goState.value) {
+      const duration = camera.userData.duration as number
+
+      cameraMixer.update(deltaTime);
     }
     // Render
     renderer.render(scene, camera);
