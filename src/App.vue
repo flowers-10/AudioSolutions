@@ -18,6 +18,8 @@ import testVertexShader from "./shaders/test/vertex.glsl";
 import testFragmentShader from "./shaders/test/fragment.glsl";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import gsap from "gsap";
+
 import {
   changeMaterial,
   modifyMaterial,
@@ -25,10 +27,31 @@ import {
 import { modifyShader } from "./utils/ShaderUtils/ShaderUtils";
 
 const goState = ref(false);
+const inOutro = ref(false);
+const inEnd = ref(false);
+const goSpeed = ref(0);
+const { lerp, clamp, inverseLerp } = THREE.MathUtils;
+const doReplay = (
+  cameraMixer: THREE.AnimationMixer,
+  tweakFog: (par: {
+    top: number;
+    bottom: number;
+    duration: number;
+    ease?: gsap.EaseString;
+  }) => void
+) => {
+  cameraMixer.setTime(0);
+  inOutro.value = false;
+  inEnd.value = false;
+  goState.value = false;
+  tweakFog({ top: 0.22, bottom: 0, duration: 3 });
+};
+
 onMounted(() => {
   /**
    * Base
    */
+
   // Debug
   const gui = new dat.GUI();
 
@@ -76,6 +99,27 @@ onMounted(() => {
     u_topY: { value: fogPar.topY.value },
     u_stroke_color: { value: new THREE.Color(strokePar.strokeColor.value) },
     u_stroke_thickness: { value: strokePar.strokeThickness.value },
+  };
+
+  const tweakFog = (par: {
+    top: number;
+    bottom: number;
+    duration: number;
+    ease?: gsap.EaseString;
+  }): void => {
+    const { top, bottom, duration, ease } = par;
+    gsap.killTweensOf(uniforms.u_topY);
+    gsap.killTweensOf(uniforms.u_bottomY);
+    gsap.to(uniforms.u_topY, {
+      value: top,
+      duration: duration,
+      ease: ease || "power2.out",
+    });
+    gsap.to(uniforms.u_bottomY, {
+      value: bottom,
+      duration,
+      ease: ease || "power2.out",
+    });
   };
 
   /**
@@ -140,9 +184,8 @@ onMounted(() => {
   // paints
 
   // camera
-  let cameraMixer: any = null;
+  let cameraMixer: THREE.AnimationMixer;
   gltfLoader.load("./static/models/mountain/camera.glb", (gltf) => {
-    console.log(gltf, 123213);
     if (gltf.cameras.length) {
       const camera0 = gltf.cameras[0] as THREE.PerspectiveCamera;
       camera.position.copy(camera0.position);
@@ -233,19 +276,53 @@ onMounted(() => {
    * Animate
    */
   const clock = new THREE.Clock();
-  let previousTime = 0;
 
   const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-    const deltaTime = elapsedTime - previousTime;
-    previousTime = elapsedTime;
+    let dt = clock.getDelta();
+    if (dt > 0.1) {
+      dt = 0.1;
+    }
     // Update controls
     // controls.update();
-    
-    if (cameraMixer && goState.value) {
-      const duration = camera.userData.duration as number
 
-      cameraMixer.update(deltaTime);
+    if (cameraMixer) {
+      const duration = camera.userData.duration as number;
+      if (inOutro.value) {
+        goSpeed.value = lerp(goSpeed.value, 2, clamp(dt, 0, 1));
+      } else {
+        if (goState.value) {
+          goSpeed.value = lerp(goSpeed.value, 1, clamp(dt * 5, 0, 1));
+        } else {
+          goSpeed.value = lerp(goSpeed.value, 0, clamp(dt * 3, 0, 1));
+          if (goSpeed.value <= 0.0001) {
+            goSpeed.value = 0;
+          }
+          if (cameraMixer.time < 0.75) {
+            goSpeed.value = Math.max(goSpeed.value, 0.05);
+          }
+        }
+
+        if (cameraMixer.time > duration) {
+          doReplay(cameraMixer, tweakFog);
+        }
+
+        if (!inOutro.value && cameraMixer.time >= 46.0) {
+          inOutro.value = true;
+
+          tweakFog({
+            top: 200,
+            bottom: 10,
+            duration: 5,
+            ease: "power1.in",
+          });
+        }
+
+        if (goSpeed.value > 0) {
+          cameraMixer.update(dt * goSpeed.value * 0.8);
+          // todo 画布
+          const folder = camera.userData.gui_folder;
+        }
+      }
     }
     // Render
     renderer.render(scene, camera);
