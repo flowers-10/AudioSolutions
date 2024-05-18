@@ -28,24 +28,8 @@ import { modifyShader } from "./utils/ShaderUtils/ShaderUtils";
 
 const goState = ref(false);
 const inOutro = ref(false);
-const inEnd = ref(false);
 const goSpeed = ref(0);
 const { lerp, clamp, inverseLerp } = THREE.MathUtils;
-const doReplay = (
-  cameraMixer: THREE.AnimationMixer,
-  tweakFog: (par: {
-    top: number;
-    bottom: number;
-    duration: number;
-    ease?: gsap.EaseString;
-  }) => void
-) => {
-  cameraMixer.setTime(0);
-  inOutro.value = false;
-  inEnd.value = false;
-  goState.value = false;
-  tweakFog({ top: 0.22, bottom: 0, duration: 3 });
-};
 
 onMounted(() => {
   /**
@@ -120,6 +104,16 @@ onMounted(() => {
       duration,
       ease: ease || "power2.out",
     });
+  };
+
+  const doReplay = () => {
+    console.log(cameraMixer.time, inOutro.value, goState.value);
+
+    cameraMixer.setTime(0);
+    cameraMixer.time = 0;
+    inOutro.value = false;
+    goState.value = false;
+    tweakFog({ top: 0.22, bottom: 0, duration: 3 });
   };
 
   /**
@@ -276,19 +270,43 @@ onMounted(() => {
    * Animate
    */
   const clock = new THREE.Clock();
+  tweakFog({
+    top: 0.22,
+    bottom: 0,
+    duration: 4.5,
+  });
 
   const tick = () => {
     let dt = clock.getDelta();
     if (dt > 0.1) {
       dt = 0.1;
     }
+
+    // uniforms.u_bottomY.value = 10
+    // uniforms.u_topY.value = 2
     // Update controls
     // controls.update();
 
     if (cameraMixer) {
       const duration = camera.userData.duration as number;
+      console.log(
+        "cameraMixer:",
+        cameraMixer.time,
+        "inOutro:",
+        inOutro.value,
+        "duration:",
+        duration,
+        "goState:",
+        goState.value,
+        "goSpeed:",
+        goSpeed.value
+      );
       if (inOutro.value) {
         goSpeed.value = lerp(goSpeed.value, 2, clamp(dt, 0, 1));
+        
+        if (cameraMixer.time > duration) {
+          doReplay();
+        }
       } else {
         if (goState.value) {
           goSpeed.value = lerp(goSpeed.value, 1, clamp(dt * 5, 0, 1));
@@ -302,13 +320,8 @@ onMounted(() => {
           }
         }
 
-        if (cameraMixer.time > duration) {
-          doReplay(cameraMixer, tweakFog);
-        }
-
-        if (!inOutro.value && cameraMixer.time >= 46.0) {
+        if (cameraMixer.time >= 46.0) {
           inOutro.value = true;
-
           tweakFog({
             top: 200,
             bottom: 10,
@@ -316,12 +329,11 @@ onMounted(() => {
             ease: "power1.in",
           });
         }
-
-        if (goSpeed.value > 0) {
-          cameraMixer.update(dt * goSpeed.value * 0.8);
-          // todo 画布
-          const folder = camera.userData.gui_folder;
-        }
+      }
+      if (goSpeed.value > 0) {
+        cameraMixer.update(dt * goSpeed.value * 0.8);
+        // todo 画布
+        const folder = camera.userData.gui_folder;
       }
     }
     // Render
