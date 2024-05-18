@@ -97,7 +97,7 @@ onMounted(() => {
       },
     };
 
-    // scene.fog = new THREE.Fog(fogPar.fogColor.value, 50, 150);
+    scene.fog = new THREE.Fog(fogPar.fogColor.value, 50, 150);
     // 描边参数
     const strokePar = {
       strokeColor: { type: <"color">"color", value: "#666666" },
@@ -151,54 +151,48 @@ onMounted(() => {
      */
 
     // mountains
-    // gltfLoader.load("./static/models/mountain/mountains.glb", (gltf) => {
-    //   const model = gltf.scene;
-    //   changeMaterial(model, THREE.MeshBasicMaterial);
-    //   const { u_fogColor, u_bottomY, u_topY } = uniforms;
-    //   modifyShader(model, [
-    //     {
-    //       type: "heightFog",
-    //       uniforms: {
-    //         u_HeightFogColor: u_fogColor,
-    //         u_HeightFogBottomY: u_bottomY,
-    //         u_HeightFogTopY: u_topY,
-    //       },
-    //     },
-    //   ]);
-    //   scene.add(model);
-    // });
+    gltfLoader.load("./static/models/mountain/mountains.glb", (gltf) => {
+      const model = gltf.scene;
+      changeMaterial(model, THREE.MeshBasicMaterial);
+      const { u_fogColor, u_bottomY, u_topY } = uniforms;
+      modifyShader(model, [
+        {
+          type: "heightFog",
+          uniforms: {
+            u_HeightFogColor: u_fogColor,
+            u_HeightFogBottomY: u_bottomY,
+            u_HeightFogTopY: u_topY,
+          },
+        },
+      ]);
+      scene.add(model);
+    });
 
     // poem
-    // gltfLoader.load("./static/models/mountain/poem.glb", (gltf) => {
-    //   const model = gltf.scene;
-    //   changeMaterial(model, THREE.MeshBasicMaterial);
-    //   const { u_fogColor, u_bottomY, u_topY } = uniforms;
-    //   modifyShader(model, [
-    //     {
-    //       type: "heightFog",
-    //       uniforms: {
-    //         u_HeightFogColor: u_fogColor,
-    //         u_HeightFogBottomY: u_bottomY,
-    //         u_HeightFogTopY: u_topY,
-    //       },
-    //     },
-    //   ]);
-    //   scene.add(model);
-    // });
+    gltfLoader.load("./static/models/mountain/poem.glb", (gltf) => {
+      const model = gltf.scene;
+      changeMaterial(model, THREE.MeshBasicMaterial);
+      const { u_fogColor, u_bottomY, u_topY } = uniforms;
+      modifyShader(model, [
+        {
+          type: "heightFog",
+          uniforms: {
+            u_HeightFogColor: u_fogColor,
+            u_HeightFogBottomY: u_bottomY,
+            u_HeightFogTopY: u_topY,
+          },
+        },
+      ]);
+      scene.add(model);
+    });
 
     // crane
     let craneMixer: THREE.AnimationMixer;
-    let craneGroupMixer: THREE.AnimationMixer;
+    let craneGroupMixerList: THREE.AnimationMixer[] = [];
     gltfLoader.load("./static/models/mountain/crane_ori.glb", (gltf) => {
       const model = gltf.scene;
       changeMaterial(model, THREE.MeshBasicMaterial);
-      scene.add(model);
-      craneMixer = new THREE.AnimationMixer(model);
 
-      gltf.animations.forEach((clip) => {
-        const action = craneMixer.clipAction(clip);
-        action.play();
-      });
       // craneGroup
       gltfLoader.load(
         "./static/models/mountain/crane_group.glb",
@@ -215,19 +209,23 @@ onMounted(() => {
               item.position.copy(child.position);
               item.scale.copy(child.scale);
               item.quaternion.copy(child.quaternion);
+              const craneGroupMixer = new THREE.AnimationMixer(item);
+
+              gltf.animations.forEach((clip) => {
+                const action = craneGroupMixer.clipAction(clip);
+                action.play();
+              });
+              craneGroupMixerList.push(craneGroupMixer);
             });
             group.clear();
             group.add(...cranes);
           });
-
-          craneGroupMixer = new THREE.AnimationMixer(craneGroupModel);
-          console.log(craneGroupModel, craneGroupMixer);
+          craneMixer = new THREE.AnimationMixer(craneGroupModel);
 
           gltfGroup.animations.forEach((clip) => {
-            const action = craneGroupMixer.clipAction(clip);
+            const action = craneMixer.clipAction(clip);
             action.play();
           });
-
           changeMaterial(craneGroupModel, THREE.MeshBasicMaterial);
           const { u_fogColor, u_bottomY, u_topY } = uniforms;
           modifyShader(craneGroupModel, [
@@ -246,36 +244,36 @@ onMounted(() => {
     });
 
     // tree
-    // gltfLoader.load("./static/models/mountain/tree.glb", (gltf) => {
-    //   const model = gltf.scene;
-    //   changeMaterial(model, THREE.MeshBasicMaterial);
-    //   const { u_fogColor, u_bottomY, u_topY } = uniforms;
-    //   modifyShader(model, [
-    //     {
-    //       type: "heightFog",
-    //       uniforms: {
-    //         u_HeightFogColor: u_fogColor,
-    //         u_HeightFogBottomY: u_bottomY,
-    //         u_HeightFogTopY: u_topY,
-    //       },
-    //     },
-    //   ]);
-    //   scene.add(model);
-    // });
+    gltfLoader.load("./static/models/mountain/tree.glb", (gltf) => {
+      const model = gltf.scene;
+      changeMaterial(model, THREE.MeshBasicMaterial);
+      const { u_fogColor, u_bottomY, u_topY } = uniforms;
+      modifyShader(model, [
+        {
+          type: "heightFog",
+          uniforms: {
+            u_HeightFogColor: u_fogColor,
+            u_HeightFogBottomY: u_bottomY,
+            u_HeightFogTopY: u_topY,
+          },
+        },
+      ]);
+      scene.add(model);
+    });
 
     // paints
-    // gltfLoader.load("./static/models/mountain/paints.glb", (gltf) => {
-    //   const model = gltf.scene;
-    //   const width = 750 * 0.005;
-    //   const height = 1500 * 0.005;
+    gltfLoader.load("./static/models/mountain/paints.glb", (gltf) => {
+      const model = gltf.scene;
+      const width = 750 * 0.005;
+      const height = 1500 * 0.005;
 
-    //   const segmentsX = Math.round(width * 2);
-    //   const segmentsY = Math.round(height * 2);
-    //   const top_geometry = new THREE.BoxGeometry(width, 0.1, 0.1);
-    //   const top_material = new THREE.MeshBasicMaterial({ color: "gold" });
+      const segmentsX = Math.round(width * 2);
+      const segmentsY = Math.round(height * 2);
+      const top_geometry = new THREE.BoxGeometry(width, 0.1, 0.1);
+      const top_material = new THREE.MeshBasicMaterial({ color: "gold" });
 
-    //   const softBodyHelpers = new Ammo.btSoftBodyHelpers();
-    // });
+      const softBodyHelpers = new Ammo.btSoftBodyHelpers();
+    });
 
     // camera
     let cameraMixer: THREE.AnimationMixer;
@@ -365,7 +363,7 @@ onMounted(() => {
     });
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    // renderer.setClearColor(uniforms.u_fogColor.value);
+    renderer.setClearColor(uniforms.u_fogColor.value);
 
     /**
      * Animate
@@ -382,17 +380,18 @@ onMounted(() => {
       if (dt > 0.1) {
         dt = 0.1;
       }
-
-      // uniforms.u_bottomY.value = 10
-      // uniforms.u_topY.value = 2
       // Update controls
       // controls.update();
 
       if (cameraMixer) {
+        const duration = camera.userData.duration as number;
         // 丹顶鹤飞行动画
         craneMixer && craneMixer.setTime(cameraMixer.time);
-        craneGroupMixer && craneGroupMixer.setTime(cameraMixer.time);
-        const duration = camera.userData.duration as number;
+        craneGroupMixerList &&
+          craneGroupMixerList.forEach((item, indx) => {
+            item.update((dt + Math.random()) * 0.05);
+          });
+
         //   // console.log(
         //   //   "cameraMixer:",
         //   //   cameraMixer.time,
