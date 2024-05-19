@@ -11,8 +11,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "../src"),
-      "@assets" : path.resolve(__dirname, "../src/assets")
+      "@": path.resolve(__dirname, "src"),
+      "@static": path.resolve(__dirname, "static"),
+      "@assets" : path.resolve(__dirname, "src/assets"),
+      "@shader" : path.resolve(__dirname, "src/shader"),
+      "@utils" : path.resolve(__dirname, "src/utils"),
+      "@components" : path.resolve(__dirname, "src/components"),
     },
   },
   plugins: [

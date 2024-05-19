@@ -19,7 +19,15 @@
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true
-    "types": ["vite/client", "vue"]
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "@assets/*": ["src/assets/*"],
+      "@shader/*": ["src/shader/*"],
+      "@components/*": ["src/components/*"],
+      "@static/*": ["static/*"]
+    },
+    "types": ["vite/client", "vue", "three", "vite-plugin-glsl/ext"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
