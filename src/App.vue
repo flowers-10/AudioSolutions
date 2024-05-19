@@ -321,6 +321,23 @@ onMounted(() => {
     });
 
     // paints
+    const cloths = new THREE.Group();
+    const headers = new THREE.Group();
+    const clothsMap = new Map();
+    const MARGIN = 0.05;
+    const PAINT_START_POS = [0, 0, 0, 14, 15, 20, 23, 26, 33];
+
+    const PAINT_END_POS = [6.5, 12, 15.5, 23, 26, 31, 33, 41, 46];
+    clothsMap.set("paint_0", textureLoader.load("./static/textures/p0.jpg"));
+    clothsMap.set("paint_1", textureLoader.load("./static/textures/p1.jpg"));
+    clothsMap.set("paint_2", textureLoader.load("./static/textures/p2.jpg"));
+    clothsMap.set("paint_3", textureLoader.load("./static/textures/p3.jpg"));
+    clothsMap.set("paint_4", textureLoader.load("./static/textures/p4.jpg"));
+    clothsMap.set("paint_5", textureLoader.load("./static/textures/p5.jpg"));
+    clothsMap.set("paint_6", textureLoader.load("./static/textures/p6.jpg"));
+    clothsMap.set("paint_7", textureLoader.load("./static/textures/p7.jpg"));
+    clothsMap.set("paint_8", textureLoader.load("./static/textures/p8.jpg"));
+
     gltfLoader.load("./static/models/mountain/paints.glb", (gltf) => {
       const model = gltf.scene;
       const width = 750 * 0.005;
@@ -332,6 +349,141 @@ onMounted(() => {
       const top_material = new THREE.MeshBasicMaterial({ color: "gold" });
 
       const softBodyHelpers = new Ammo.btSoftBodyHelpers();
+      for (let i = 0; i < 9; i++) {
+        // 原图
+        const mesh = model.getObjectByName(`hua_${i + 1}`) as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshStandardMaterial
+        >;
+        mesh.material.side = THREE.DoubleSide;
+        const paint_material = new THREE.MeshBasicMaterial({
+          side: THREE.DoubleSide,
+        });
+        const map = clothsMap.get(`paint_${i}`);
+        map.colorSpace = THREE.SRGBColorSpace;
+        paint_material.map = map
+        paint_material.needsUpdate = true;
+        const paint_geometry = new THREE.PlaneGeometry(
+          width,
+          height,
+          segmentsX,
+          segmentsY
+        );
+        // 创建的图
+        const cloth = new THREE.Mesh(paint_geometry, paint_material);
+        cloth.position.copy(mesh.position);
+        cloth.scale.copy(mesh.scale).multiplyScalar(2);
+        cloth.quaternion.copy(mesh.quaternion);
+        cloths.add(cloth);
+
+        // /**
+        //  * 00┎──────┒01
+        //  *   ┃      ┃
+        //  *   ┃      ┃
+        //  * 10┖──────┚11
+        //  */
+
+        // 创建布匹软刚体
+        const corner00 = new Ammo.btVector3(-width * 0.5, height * 0.5, 0);
+        const corner01 = new Ammo.btVector3(width * 0.5, height * 0.5, 0);
+        const corner10 = new Ammo.btVector3(-width * 0.5, -height * 0.5, 0);
+        const corner11 = new Ammo.btVector3(width * 0.5, -height * 0.5, 0);
+
+        const clothSoftBody = softBodyHelpers.CreatePatch(
+          physicsWorld.getWorldInfo(),
+          corner00,
+          corner01,
+          corner10,
+          corner11,
+          segmentsX + 1,
+          segmentsY + 1,
+          0,
+          true
+        );
+        const softBodyConfig = clothSoftBody.get_m_cfg();
+        softBodyConfig.set_viterations(10);
+        softBodyConfig.set_piterations(10);
+        softBodyConfig.set_kLF(0.05);
+        softBodyConfig.set_kDG(0.01);
+
+        clothSoftBody.setTotalMass(1, false);
+        Ammo.castObject(clothSoftBody, Ammo.btCollisionObject)
+          .getCollisionShape()
+          .setMargin(MARGIN * 3);
+        physicsWorld.addSoftBody(clothSoftBody, 1, -1);
+
+        cloth.userData.physicsBody = clothSoftBody;
+
+        clothSoftBody.setActivationState(4);
+        // 创建顶部支架
+        const header = new THREE.Mesh(top_geometry, top_material);
+        header.position.setY(height * 0.5 * cloth.scale.y).add(cloth.position);
+        header.scale.copy(cloth.scale);
+        header.quaternion.copy(cloth.quaternion);
+        headers.add(header)
+
+        // 创建支架硬刚体
+        const headerMass = 0;
+        const headerShape = new Ammo.btBoxShape(
+          new Ammo.btVector3(width, 0.1, 0.1)
+        );
+        const transform = new Ammo.btTransform();
+        transform.setIdentity();
+        {
+          const { x, y, z } = header.position;
+          transform.setOrigin(new Ammo.btVector3(x, y, z));
+        }
+        {
+          const { x, y, z, w } = header.quaternion;
+          transform.setRotation(new Ammo.btQuaternion(x, y, z, w));
+        }
+
+        const motionState = new Ammo.btDefaultMotionState(transform);
+        const localInertia = new Ammo.btVector3(0, 0, 0);
+        headerShape.calculateLocalInertia(headerMass, localInertia);
+        const rigidBodyInfo = new Ammo.btRigidBodyConstructionInfo(
+          headerMass,
+          motionState,
+          headerShape,
+          localInertia
+        );
+        const body = new Ammo.btRigidBody(rigidBodyInfo);
+
+        header.userData.physicsBody = body;
+        body.setActivationState(4);
+        physicsWorld.addRigidBody(body);
+
+        // 连接
+        const influence = 0.5;
+        for (let i = 0; i < segmentsX + 1; i++) {
+          clothSoftBody.appendAnchor(
+            i,
+            header.userData.physicsBody,
+            false,
+            influence
+          );
+        }
+      }
+      scene.add(cloths);
+      scene.add(headers);
+      const { u_fogColor, u_bottomY, u_topY } = uniforms;
+      modifyShader(cloths, [
+        {
+          type: "heightFog",
+          uniforms: {
+            u_HeightFogColor: u_fogColor,
+            u_HeightFogBottomY: u_bottomY,
+            u_HeightFogTopY: u_topY,
+          },
+        },
+      ]);
+      
+      modifyShader(headers, [
+            {
+                type: "heightFog",
+                uniforms: { u_HeightFogColor: u_fogColor, u_HeightFogBottomY: u_bottomY, u_HeightFogTopY: u_topY, }
+            }
+        ])
     });
 
     // camera
@@ -433,9 +585,10 @@ onMounted(() => {
       bottom: 0,
       duration: 4.5,
     });
-
+    let elapsedTime = 0;
     const tick = () => {
       let dt = clock.getDelta();
+      elapsedTime += dt;
       if (dt > 0.1) {
         dt = 0.1;
       }
@@ -444,12 +597,15 @@ onMounted(() => {
 
       if (cameraMixer) {
         const duration = camera.userData.duration as number;
+
         // 丹顶鹤飞行动画
         craneMixer && craneMixer.setTime(cameraMixer.time);
         craneGroupMixerList &&
           craneGroupMixerList.forEach((item, indx) => {
             item.update(dt);
           });
+
+        // 云朵漂浮动画
         mists &&
           mists.children.forEach((itemX) => {
             itemX.children.forEach((mesh) => {
@@ -484,6 +640,48 @@ onMounted(() => {
             });
           });
 
+        // 画布软体动画
+        physicsWorld.stepSimulation(dt, 10);
+        const angle = (Math.random() - 0.5) * Math.PI;
+        var windForce = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle));
+        // 例如：沿着 X 轴吹的风
+        windForce.normalize(); // 标准化为单位向量
+        windForce.multiplyScalar(Math.cos(elapsedTime * 1.5) * 0.01); // 调整风的强度
+
+        cloths.children.forEach((child, idx) => {
+          const startTm = PAINT_START_POS[idx];
+          const endTm = PAINT_END_POS[idx];
+          if (cameraMixer.time < startTm || cameraMixer.time > endTm) return;
+
+          const cloth = child as THREE.Mesh<
+            THREE.PlaneGeometry,
+            THREE.MeshBasicMaterial
+          >;
+
+          const softBody = cloth.userData.physicsBody;
+          if (!softBody) return;
+          const clothPositions = cloth.geometry.attributes.position.array;
+          const numVerts = clothPositions.length / 3;
+          const nodes = softBody.get_m_nodes();
+          let indexFloat = 0;
+          // 风力
+          const absForce = new THREE.Vector3();
+          absForce.copy(windForce);
+          absForce.applyEuler(cloth.rotation);
+          const force = new Ammo.btVector3(absForce.x, absForce.y, absForce.z);
+          softBody.addForce(force);
+          for (let i = 0; i < numVerts; i++) {
+            const node = nodes.at(i);
+            const nodePos = node.get_m_x();
+            clothPositions[indexFloat++] = nodePos.x();
+            clothPositions[indexFloat++] = nodePos.y();
+            clothPositions[indexFloat++] = nodePos.z();
+          }
+          cloth.geometry.computeVertexNormals();
+          cloth.geometry.attributes.position.needsUpdate = true;
+          cloth.geometry.attributes.normal.needsUpdate = true;
+        });
+
         //   // console.log(
         //   //   "cameraMixer:",
         //   //   cameraMixer.time,
@@ -496,6 +694,9 @@ onMounted(() => {
         //   //   "goSpeed:",
         //   //   goSpeed.value
         //   // );
+
+        // 点击按钮动画
+        // 计算goSpeed，使用lerp插值模拟惯性
         if (inOutro.value) {
           goSpeed.value = lerp(goSpeed.value, 2, clamp(dt, 0, 1));
 
