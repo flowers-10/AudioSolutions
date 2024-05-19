@@ -31,7 +31,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 const goState = ref(false);
 const inOutro = ref(false);
 const goSpeed = ref(0);
-const { lerp, clamp, inverseLerp } = THREE.MathUtils;
+const { lerp, clamp, randFloat } = THREE.MathUtils;
 
 // Loader
 const dracoLoader = new DRACOLoader();
@@ -39,6 +39,8 @@ dracoLoader.setDecoderPath("./static/draco/");
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
+
+const textureLoader = new THREE.TextureLoader();
 
 onMounted(() => {
   /**
@@ -243,6 +245,63 @@ onMounted(() => {
       );
     });
 
+    // Mist
+    const mists: THREE.Group = new THREE.Group();
+    const X_RANGE = [-5, 5];
+    const Y_RANGE = [-3, 3];
+    const Z_RANGE = [-1, 1];
+    const SP_RANGE = [0.1, 0.3];
+    const AS_RANGE = [-0.3, 0.3];
+
+    const mistTexture = textureLoader.load("./static/textures/mist.png");
+
+    gltfLoader.load("./static/models/mountain/mist_pos.glb", (gltf) => {
+      const model = gltf.scene;
+
+      const geometry = new THREE.PlaneGeometry(5, 5);
+      const meshes = new THREE.Group();
+      for (let i = 0; i < 5; i++) {
+        const material = new THREE.MeshBasicMaterial({
+          transparent: true,
+          map: mistTexture,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+
+        mesh.rotation.z = Math.random() * Math.PI * 2;
+        mesh.position.set(
+          randFloat(X_RANGE[0], X_RANGE[1]),
+          randFloat(Y_RANGE[0], Y_RANGE[1]),
+          randFloat(Z_RANGE[0], Z_RANGE[1])
+        );
+        mesh.userData.speed = randFloat(SP_RANGE[0], SP_RANGE[1]);
+        mesh.userData.angularSpeed = randFloat(AS_RANGE[0], AS_RANGE[1]);
+        meshes.add(mesh);
+      }
+
+      for (let i = 0; i < model.children.length; i++) {
+        const posMesh = model.children[i];
+        const mist = meshes.clone();
+        mist.scale.set(8, 1.5, 1);
+        mist.position.copy(posMesh.position);
+        mist.rotation.copy(posMesh.rotation);
+        mists.add(mist);
+      }
+      const { u_fogColor, u_bottomY, u_topY } = uniforms;
+      modifyShader(mists, [
+        {
+          type: "heightFog",
+          uniforms: {
+            u_HeightFogColor: u_fogColor,
+            u_HeightFogBottomY: u_bottomY,
+            u_HeightFogTopY: u_topY,
+          },
+        },
+      ]);
+      scene.add(mists);
+    });
+
     // tree
     gltfLoader.load("./static/models/mountain/tree.glb", (gltf) => {
       const model = gltf.scene;
@@ -389,7 +448,40 @@ onMounted(() => {
         craneMixer && craneMixer.setTime(cameraMixer.time);
         craneGroupMixerList &&
           craneGroupMixerList.forEach((item, indx) => {
-            item.update((dt + Math.random()) * 0.05);
+            item.update(dt);
+          });
+        mists &&
+          mists.children.forEach((itemX) => {
+            itemX.children.forEach((mesh) => {
+              const { speed, angularSpeed } = mesh.userData;
+              mesh.position.x -= speed * dt;
+              mesh.rotation.z += angularSpeed * dt;
+
+              const { material } = mesh as THREE.Mesh<
+                THREE.PlaneGeometry,
+                THREE.MeshBasicMaterial
+              >;
+              if (mesh.position.x < X_RANGE[0]) {
+                material.opacity -= dt;
+
+                if (material.opacity <= 0) {
+                  mesh.position.set(
+                    X_RANGE[1],
+                    randFloat(Y_RANGE[0], Y_RANGE[1]),
+                    randFloat(Z_RANGE[0], Z_RANGE[1])
+                  );
+                  mesh.userData.speed = randFloat(SP_RANGE[0], SP_RANGE[1]);
+                  mesh.userData.angularSpeed = randFloat(
+                    AS_RANGE[0],
+                    AS_RANGE[1]
+                  );
+                }
+              } else {
+                if (material.opacity < 1) {
+                  material.opacity += dt;
+                }
+              }
+            });
           });
 
         //   // console.log(
