@@ -13,7 +13,7 @@ void main()
     fragCoord = 5. * ( fragCoord + fragCoord - iResolution) / iResolution.y; // 归一化坐标，放大到屏幕高度的5倍
     fragCoord.y = 1. - fragCoord.y * 2.; // 垂直方向翻转
     fragCoord /= 1. + fragCoord.y / 10.; // 透视效果
-    fragCoord.y -= iTime; // 根据时间偏移
+    fragCoord.y += iTime; // 根据时间偏移
     
     fragCoord = abs(fract(fragCoord) - .5); // 计算到坐标轴的距离
     fragCoord = .1 / sqrt(fragCoord); // 将距离转为模糊线效果

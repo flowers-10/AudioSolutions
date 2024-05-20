@@ -1,9 +1,9 @@
 <template>
   <div>
-    <audio style="z-index: 100;position: absolute;" ref="audio" crossorigin="anonymous" @play="audioPlay">
+    <audio ref="audio" crossorigin="anonymous">
       <source src="../../../static/audio/Avicii-WeBurn.mp3" type="audio/mpeg">
     </audio>
-
+    <button style="z-index: 100;position: absolute;" @click="sSource.start()">Play</button>
     <canvas class="webgl"></canvas>
   </div>
 </template>
@@ -15,7 +15,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import testVertexShader from '@shaders/test/vertex.glsl'
 import testFragmentShader from '@shaders/test/fragment.glsl'
-
+const sSource = ref()
 onMounted(async () => {
   /**
 * Base
@@ -63,13 +63,7 @@ onMounted(async () => {
 
   source.connect(analyser);
   analyser.connect(audioContext.destination);
-
-  setTimeout(() => {
-    source.start();
-  }, 1000);
-
-
-
+  sSource.value = source
   // Mesh
   const mesh = new THREE.Mesh(geometry, material)
   scene.add(mesh)
