@@ -1,11 +1,13 @@
 <template>
   <div>
-    <AsEthereal/>
+    <!-- <AsEthereal/> -->
+    <AsAudio />
   </div>
 </template>
 
 <script setup lang="ts">
 import AsEthereal from '@components/AsEthereal/index.vue'
+import AsAudio from '@components/AsAudio/index.vue'
 
 </script>
 
@@ -19,5 +21,4 @@ html,
 body {
   overflow: hidden;
 }
-
 </style>

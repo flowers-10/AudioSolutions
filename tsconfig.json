@@ -23,7 +23,7 @@
     "paths": {
       "@utils/*": ["src/utils/*"],
       "@assets/*": ["src/assets/*"],
-      "@shader/*": ["src/shader/*"],
+      "@shaders/*": ["src/shader/*"],
       "@components/*": ["src/components/*"],
       "@static/*": ["static/*"]
     },

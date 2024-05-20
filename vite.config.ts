@@ -14,7 +14,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
       "@static": path.resolve(__dirname, "static"),
       "@assets" : path.resolve(__dirname, "src/assets"),
-      "@shader" : path.resolve(__dirname, "src/shader"),
+      "@shaders" : path.resolve(__dirname, "src/shaders"),
       "@utils" : path.resolve(__dirname, "src/utils"),
       "@components" : path.resolve(__dirname, "src/components"),
     },
