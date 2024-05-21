@@ -246,7 +246,7 @@ onMounted(() => {
     const AS_RANGE = [-0.3, 0.3];
 
     const mistTexture = textureLoader.load("static/textures/mist.png");
-
+    
     gltfLoader.load("static/models/mountain/mist_pos.glb", (gltf) => {
       const model = gltf.scene;
 
