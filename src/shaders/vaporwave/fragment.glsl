@@ -78,8 +78,7 @@ vec3 GetHitPointColor(in vec3 cameraPos, in vec3 hitPoint, in vec3 background)
     col /= min(li, lo);
 
 
-​    
-
+   
     d = min(fx, fz);
     d = smoothstep(d, 0., 0.02);
     
@@ -162,7 +161,7 @@ void main()
     u = normalize(cross(r, f));
 
 
-​    
+  
 
     gl_FragColor = GetScreenColor(normalize(f * ray.z + u * ray.y + r * ray.x), vec3(0.0, 0.1, iTime * SPEED));
 
