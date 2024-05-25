@@ -16,9 +16,14 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
 import testVertexShader from "@shaders/test/vertex.glsl";
-import vaporwaveVertexShader from "@shaders/vaporwave/vertex.glsl";
 import testFragmentShader from "@shaders/test/fragment.glsl";
+
+import vaporwaveVertexShader from "@shaders/vaporwave/vertex.glsl";
 import vaporwaveFragmentShader from "@shaders/vaporwave/fragment.glsl";
+
+import octagramsVertexShader from "@shaders/octagrams/vertex.glsl";
+import octagramsFragmentShader from "@shaders/octagrams/fragment.glsl";
+
 const sSource = ref();
 onMounted(async () => {
   /**
@@ -41,8 +46,8 @@ onMounted(async () => {
   const geometry = new THREE.PlaneGeometry(5, 5, 32, 32);
   // Material
   const material = new THREE.ShaderMaterial({
-    vertexShader: vaporwaveVertexShader,
-    fragmentShader: vaporwaveFragmentShader,
+    vertexShader: octagramsVertexShader,
+    fragmentShader: octagramsFragmentShader,
     side: THREE.DoubleSide,
     transparent: true,
     uniforms: {
