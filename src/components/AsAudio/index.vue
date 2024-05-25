@@ -24,6 +24,10 @@ import vaporwaveFragmentShader from "@shaders/vaporwave/fragment.glsl";
 import octagramsVertexShader from "@shaders/octagrams/vertex.glsl";
 import octagramsFragmentShader from "@shaders/octagrams/fragment.glsl";
 
+import doubleDragonsVertexShader from "@shaders/doubleDragons/vertex.glsl";
+import doubleDragonsFragmentShader from "@shaders/doubleDragons/fragment.glsl";
+
+
 const sSource = ref();
 onMounted(async () => {
   /**
@@ -46,8 +50,8 @@ onMounted(async () => {
   const geometry = new THREE.PlaneGeometry(5, 5, 32, 32);
   // Material
   const material = new THREE.ShaderMaterial({
-    vertexShader: octagramsVertexShader,
-    fragmentShader: octagramsFragmentShader,
+    vertexShader: doubleDragonsVertexShader,
+    fragmentShader: doubleDragonsFragmentShader,
     side: THREE.DoubleSide,
     transparent: true,
     uniforms: {
