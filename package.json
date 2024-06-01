@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/howler": "^2.2.11",
     "@types/three": "^0.164.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
