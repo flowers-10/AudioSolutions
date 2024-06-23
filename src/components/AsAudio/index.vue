@@ -2,12 +2,6 @@
   <div>
     <canvas class="webgl"></canvas>
     <button style="z-index: 100; position: absolute" @click="play">Play</button>
-    <button style="z-index: 100; position: absolute; left: 50px" @click="pause">
-      Pause
-    </button>
-    <button style="z-index: 100; position: absolute; left: 100px" @click="stop">
-      Stop
-    </button>
   </div>
 </template>
 
@@ -15,13 +9,16 @@
 import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import audiosVertex from "@shaders/audios/vertex.glsl";
+import audiosFragment from "@shaders/audios/fragment.glsl";
 
 const mediaElement = ref();
 const analyser = ref();
 const uniform = ref();
-let scene:any
-let camera:any
-let renderer:any
+let scene: any;
+let camera: any;
+let renderer: any;
+let controls: any;
 const fftSize = 128;
 const clock = new THREE.Clock();
 
@@ -29,11 +26,6 @@ const init = () => {
   const canvas = document.querySelector("canvas.webgl");
   // Scene
   scene = new THREE.Scene();
-
-  const material = new THREE.MeshBasicMaterial()
-  const geometry = new THREE.PlaneGeometry(1, 1);
-  const mesh = new THREE.Mesh(geometry, material);
-  // scene.add(mesh);
   /**
    * Sizes
    */
@@ -54,15 +46,6 @@ const init = () => {
   });
 
   /**
-   * Renderer
-   */
-  renderer = new THREE.WebGLRenderer({
-    canvas: canvas as HTMLElement,
-  });
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor("#111");
-  /**
    * Camera
    */
   // Base camera
@@ -72,20 +55,38 @@ const init = () => {
     0.1,
     100
   );
-  camera.position.set(0, 0, 1);
+  camera.position.set(0, 0, 2);
   scene.add(camera);
-  // Controls
 
+  /**
+   * Renderer
+   */
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvas as HTMLElement,
+  });
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor("#111");
+
+  // Controls
+  controls = new OrbitControls(camera, canvas as HTMLElement);
   // controls.enableDamping = true;
 };
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  controls?.update();
+
   // Update material
   analyser.value?.getFrequencyData && analyser.value.getFrequencyData();
-  console.log(analyser.value?.data);
+  // console.log(analyser.value?.data);
+  // console.log(uniform.value?.tAudioData);
+
   if (uniform.value?.tAudioData) {
     uniform.value.tAudioData.value.needsUpdate = true;
+  }
+  if (uniform.value?.uTime) {
+    uniform.value.uTime.value = elapsedTime;
   }
 
   // Render
@@ -103,6 +104,7 @@ const play = () => {
   audio.setMediaElementSource(mediaElement.value);
   analyser.value = new THREE.AudioAnalyser(audio, fftSize);
   uniform.value = {
+    uTime: { value: 0 },
     tAudioData: {
       value: new THREE.DataTexture(
         analyser.value.data,
@@ -115,33 +117,11 @@ const play = () => {
 
   const material = new THREE.ShaderMaterial({
     uniforms: uniform.value,
-    vertexShader: `
-			varying vec2 vUv;
-
-			void main() {
-
-				vUv = uv;
-
-				gl_Position = vec4( position, 1.0 );
-
-			}`,
-    fragmentShader: `uniform sampler2D tAudioData;
-			varying vec2 vUv;
-
-			void main() {
-
-				vec3 backgroundColor = vec3( 0.125, 0.125, 0.125 );
-				vec3 color = vec3( 1.0, 1.0, 0.0 );
-
-				float f = texture2D( tAudioData, vec2( vUv.x, 0.0 ) ).r;
-
-				float i = step( vUv.y, f ) * step( f - 0.0125, vUv.y );
-
-				gl_FragColor = vec4( mix( backgroundColor, color, i ), 1.0 );
-
-			}`,
+    vertexShader: audiosVertex,
+    fragmentShader: audiosFragment,
   });
-  const geometry = new THREE.PlaneGeometry(1, 1);
+
+  const geometry = new THREE.SphereGeometry(0.5, 32, 16);
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 };
