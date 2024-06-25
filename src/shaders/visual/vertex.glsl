@@ -80,7 +80,7 @@ float cnoise(vec3 P){
 
 void main(){
     vec3 newPos = position;
-   newPos += normal * cnoise(position * (sin(uTime + tAudioData) + 1.0) * 4.0);
+   newPos += normal * cnoise(position * sqrt(tAudioData) / 2.);
 
    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
     vUv=uv;

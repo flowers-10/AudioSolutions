@@ -2,6 +2,7 @@
   <div>
     <canvas class="webgl"></canvas>
     <button style="z-index: 100; position: absolute" @click="play">Play</button>
+    <button style="z-index: 100; position: absolute;left:60px" @click="pause">Pause</button>
   </div>
 </template>
 
@@ -27,6 +28,21 @@ const init = () => {
   // Scene
   scene = new THREE.Scene();
 
+  uniform.value = {
+    uTime: { value: 0 },
+    tAudioData: { value: 0 },
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms: uniform.value,
+    vertexShader: visualVertex,
+    fragmentShader: visualFragment,
+    // wireframe: true,
+  });
+
+  const geometry = new THREE.SphereGeometry(0.5, 256, 256);
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
   /**
    * Sizes
    */
@@ -84,11 +100,11 @@ const tick = () => {
   // console.log(uniform.value?.tAudioData);
 
   if (uniform.value?.tAudioData) {
-    uniform.value.tAudioData.value = analyser.value.data[0] 
+    uniform.value.tAudioData.value = analyser.value?.data[0]
     // uniform.value.tAudioData.value.needsUpdate = true;
   }
   if (uniform.value?.uTime) {
-    
+
     uniform.value.uTime.value = elapsedTime;
   }
 
@@ -105,32 +121,12 @@ const play = () => {
   mediaElement.value = new Audio(file);
   mediaElement.value.play();
   audio.setMediaElementSource(mediaElement.value);
-  analyser.value = new THREE.AudioAnalyser(audio, fftSize);
-  
-  uniform.value = {
-    uTime: { value: 0 },
-    tAudioData: {
-      value:
-        analyser.value.data      // value: new THREE.DataTexture(
-      //   analyser.value.data,
-      //   fftSize / 2,
-      //   1,
-      //   THREE.RedFormat
-      // ),
-    },
-  };
-
-  const material = new THREE.ShaderMaterial({
-    uniforms: uniform.value,
-    vertexShader: visualVertex,
-    fragmentShader: visualFragment,
-    // wireframe: true,
-  });
-
-  const geometry = new THREE.SphereGeometry(0.5, 256, 256);
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  analyser.value = new THREE.AudioAnalyser(audio, fftSize)
 };
+
+const pause = () => {
+  mediaElement.value.pause();
+}
 onMounted(async () => {
   init();
   tick();
