@@ -9,8 +9,8 @@
 import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import audiosVertex from "@shaders/audios/vertex.glsl";
-import audiosFragment from "@shaders/audios/fragment.glsl";
+import visualVertex from "@shaders/visual/vertex.glsl";
+import visualFragment from "@shaders/visual/fragment.glsl";
 
 const mediaElement = ref();
 const analyser = ref();
@@ -26,6 +26,7 @@ const init = () => {
   const canvas = document.querySelector("canvas.webgl");
   // Scene
   scene = new THREE.Scene();
+
   /**
    * Sizes
    */
@@ -83,9 +84,11 @@ const tick = () => {
   // console.log(uniform.value?.tAudioData);
 
   if (uniform.value?.tAudioData) {
-    uniform.value.tAudioData.value.needsUpdate = true;
+    uniform.value.tAudioData.value = analyser.value.data[0] 
+    // uniform.value.tAudioData.value.needsUpdate = true;
   }
   if (uniform.value?.uTime) {
+    
     uniform.value.uTime.value = elapsedTime;
   }
 
@@ -103,25 +106,28 @@ const play = () => {
   mediaElement.value.play();
   audio.setMediaElementSource(mediaElement.value);
   analyser.value = new THREE.AudioAnalyser(audio, fftSize);
+  
   uniform.value = {
     uTime: { value: 0 },
     tAudioData: {
-      value: new THREE.DataTexture(
-        analyser.value.data,
-        fftSize / 2,
-        1,
-        THREE.RedFormat
-      ),
+      value:
+        analyser.value.data      // value: new THREE.DataTexture(
+      //   analyser.value.data,
+      //   fftSize / 2,
+      //   1,
+      //   THREE.RedFormat
+      // ),
     },
   };
 
   const material = new THREE.ShaderMaterial({
     uniforms: uniform.value,
-    vertexShader: audiosVertex,
-    fragmentShader: audiosFragment,
+    vertexShader: visualVertex,
+    fragmentShader: visualFragment,
+    // wireframe: true,
   });
 
-  const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+  const geometry = new THREE.SphereGeometry(0.5, 256, 256);
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 };
