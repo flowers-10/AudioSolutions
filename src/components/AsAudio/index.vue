@@ -20,8 +20,10 @@ let scene: any;
 let camera: any;
 let renderer: any;
 let controls: any;
-const fftSize = 128;
+const fftSize = 4096;
 const clock = new THREE.Clock();
+
+let mesh: THREE.Mesh
 
 const init = () => {
   const canvas = document.querySelector("canvas.webgl");
@@ -31,6 +33,7 @@ const init = () => {
   uniform.value = {
     uTime: { value: 0 },
     tAudioData: { value: 0 },
+    uStrength: { value: 0 },
   };
 
   const material = new THREE.ShaderMaterial({
@@ -40,8 +43,9 @@ const init = () => {
     // wireframe: true,
   });
 
-  const geometry = new THREE.SphereGeometry(0.5, 256, 256);
-  const mesh = new THREE.Mesh(geometry, material);
+  // const geometry = new THREE.SphereGeometry(0.5, 256, 256);
+  const geometry = new THREE.IcosahedronGeometry(2.5, 50)
+  mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
   /**
    * Sizes
@@ -72,7 +76,7 @@ const init = () => {
     0.1,
     100
   );
-  camera.position.set(0, 0, 2);
+  camera.position.set(0, 0, 5);
   scene.add(camera);
 
   /**
@@ -95,14 +99,11 @@ const tick = () => {
   controls?.update();
 
   // Update material
-  analyser.value?.getFrequencyData && analyser.value.getFrequencyData();
+
   // console.log(analyser.value?.data);
   // console.log(uniform.value?.tAudioData);
+  updateOffsetData()
 
-  if (uniform.value?.tAudioData) {
-    uniform.value.tAudioData.value = analyser.value?.data[0]
-    // uniform.value.tAudioData.value.needsUpdate = true;
-  }
   if (uniform.value?.uTime) {
 
     uniform.value.uTime.value = elapsedTime;
@@ -113,6 +114,30 @@ const tick = () => {
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 };
+
+const updateOffsetData = () => {
+  // if (analyser.value?.getFrequencyData) {
+  //   analyser.value.getFrequencyData();
+  //   const analyserData = analyser.value?.data;
+  //   const length = mesh.geometry.attributes.aOffset.count;
+  //   for (let i = 0; i < length; i++) {
+  //     const offset = analyserData[i % analyserData.length] / 255;
+  //     mesh.geometry.attributes.aOffset.array[i] = offset;
+  //   }
+  //   mesh.geometry.attributes.aOffset.needsUpdate = true;
+  // }
+  if (analyser.value?.getFrequencyData) {
+    analyser.value.getFrequencyData();
+    const analyserData = analyser.value?.data;
+    let sum = 0;
+    for (let i = 0; i < analyserData.length; i++) {
+      sum += analyserData[i];
+    }
+    sum /= analyserData.length * 255;
+    uniform.value.uStrength.value = sum;
+
+  }
+}
 
 const play = () => {
   const listener = new THREE.AudioListener();
