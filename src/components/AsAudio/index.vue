@@ -133,7 +133,7 @@ const updateOffsetData = () => {
     for (let i = 0; i < analyserData.length; i++) {
       sum += analyserData[i];
     }
-    sum /= analyserData.length * 255;
+    sum /= analyserData.length * 25.5;
     uniform.value.uStrength.value = sum;
 
   }
