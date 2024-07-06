@@ -11,8 +11,12 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
+import * as dat from "lil-gui";
 
 onMounted(async () => {
+  /* Debug */
+  const gui = new dat.GUI();
   /* Base */
   // Canvas
   const canvas = document.querySelector("canvas.webgl");
@@ -28,15 +32,38 @@ onMounted(async () => {
   // plane
   gltfLoader.load("static/models/smartBusiness/plane.glb", (gltf) => {
     const model = gltf.scene;
+    model.position.set(10, -130, -50);
     scene.add(model);
   });
   //   building-main
   gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
-    console.log(gltf, 111);
-
     const model = gltf.scene;
+    model.position.set(10, -130, -50);
     scene.add(model);
   });
+  gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
+    const model = gltf.scene;
+    model.position.set(10, -130, -50);
+    scene.add(model);
+  });
+  // tree
+  gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
+    const model = gltf.scene;
+    model.position.set(10, -130, -50);
+    scene.add(model);
+  });
+  //   road
+  gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
+    const model = gltf.scene;
+    model.position.set(10, -130, -50);
+    scene.add(model);
+  });
+  gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
+    const model = gltf.scene;
+    model.position.set(10, -130.1, -50);
+    scene.add(model);
+  });
+
   /* Lights */
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   scene.add(ambientLight);
@@ -57,10 +84,13 @@ onMounted(async () => {
   const camera = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
-    0.1,
-    10000
+    120,
+    2000
   );
-  camera.position.set(60, 600, 120);
+  camera.position.set(-65, 45, 116);
+  gui.add(camera.position, "x").min(-200).max(200).step(1).name("cameraX");
+  gui.add(camera.position, "y").min(-200).max(300).step(1).name("cameraY");
+  gui.add(camera.position, "z").min(-200).max(200).step(1).name("cameraZ");
   scene.add(camera);
   /* Controls */
   const controls = new OrbitControls(camera, canvas as HTMLElement);
@@ -79,11 +109,17 @@ onMounted(async () => {
   effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   const renderPass = new RenderPass(scene, camera);
   effectComposer.addPass(renderPass);
+  if (renderer.getPixelRatio() === 1 && !renderer.capabilities.isWebGL2) {
+    const smaaPass = new SMAAPass(sizes.width, sizes.height);
+    effectComposer.addPass(smaaPass);
+
+    console.log("Using SMAA");
+  }
   // bloom
   const unrealBloomPass = new UnrealBloomPass(
-    new THREE.Vector2(sizes.width,sizes.height),
+    new THREE.Vector2(sizes.width, sizes.height),
     0.2,
-    0.2,
+    0.1,
     0.05
   );
   effectComposer.addPass(unrealBloomPass);
