@@ -8,6 +8,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 
 onMounted(async () => {
   /* Base */
@@ -22,17 +25,21 @@ onMounted(async () => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
   /* Object */
-//   scene.add(
-//     new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshBasicMaterial())
-//   );
-  // mountains
+  // plane
   gltfLoader.load("static/models/smartBusiness/plane.glb", (gltf) => {
     const model = gltf.scene;
     scene.add(model);
   });
-  /* Lights */ 
+  //   building-main
+  gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
+    console.log(gltf, 111);
+
+    const model = gltf.scene;
+    scene.add(model);
+  });
+  /* Lights */
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-  scene.add(ambientLight)
+  scene.add(ambientLight);
   /* Sizes */
   const sizes = {
     width: window.innerWidth,
@@ -65,13 +72,31 @@ onMounted(async () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor("#111");
+
+  /* RenderPass */
+  const effectComposer = new EffectComposer(renderer);
+  effectComposer.setSize(sizes.width, sizes.height);
+  effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const renderPass = new RenderPass(scene, camera);
+  effectComposer.addPass(renderPass);
+  // bloom
+  const unrealBloomPass = new UnrealBloomPass(
+    new THREE.Vector2(sizes.width,sizes.height),
+    0.2,
+    0.2,
+    0.05
+  );
+  effectComposer.addPass(unrealBloomPass);
+
   /* Animate */
   const clock = new THREE.Clock();
 
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
     controls.update();
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
+    // processing
+    effectComposer.render();
     window.requestAnimationFrame(tick);
   };
   tick();
