@@ -15,13 +15,16 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 import * as dat from "lil-gui";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+import gsap from 'gsap'
+
+
 const onSwitchModels = () => {
   smartBusiness.children.forEach((item) => {
     if (item.name.includes("building-main")) {
       smartBusiness.remove(item);
       smartBusiness.add(lift)
       smartBusiness.add(buildingTransparent)
-    }else {
+    } else {
       smartBusiness.remove(lift)
       smartBusiness.remove(buildingTransparent)
       smartBusiness.add(buildingMain)
@@ -36,9 +39,9 @@ dracoLoader.setDecoderPath("static/draco/");
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
-let buildingTransparent:any = null;
-let lift:any = null;
-let buildingMain:any = null;
+let buildingTransparent: any = null;
+let lift: any = null;
+let buildingMain: any = null;
 
 gltfLoader.load(
   "static/models/smartBusiness/building-transparent.glb",
@@ -51,6 +54,12 @@ gltfLoader.load(
 gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
   const model = gltf.scene;
   model.name = "lift";
+  
+  model.children[0].children.forEach(item => {
+      console.log(item);
+      // todo
+     gsap.to(item.position,{y:200,direction:1000})
+    })
   lift = model;
 });
 
@@ -79,6 +88,32 @@ onMounted(async () => {
   gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "building-other";
+    model.children[0].children.forEach((item: any) => {
+      const old: THREE.Material = item.material
+      const material = new CustomShaderMaterial({
+        baseMaterial: old,
+        uniforms: {
+          iTime: { value: 0 },
+        },
+        vertexShader: `
+      varying vec3 vPosition;
+      void main(){   
+        csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(csm_Position, 1.0);
+        vPosition = csm_Position;
+    }`,
+        fragmentShader: `
+      uniform float iTime;
+      varying vec3 vPosition;
+
+      void main(){   
+        csm_FragColor.a = 0.6;
+      }  
+    `,
+        side: THREE.DoubleSide,
+        transparent: true,
+      });
+      item.material = material
+    })
     smartBusiness.add(model);
   });
   gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
@@ -91,15 +126,15 @@ onMounted(async () => {
     model.name = "road-old";
     smartBusiness.add(model);
   });
-  gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "road";
-    smartBusiness.add(model);
-  });
+  // gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
+  //   const model = gltf.scene;
+  //   model.name = "road";
+  //   smartBusiness.add(model);
+  // });
   // all models
   setTimeout(() => {
     smartBusiness.add(buildingMain)
-  }, 1000);
+  }, 2000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
   const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
@@ -236,6 +271,7 @@ onMounted(async () => {
   left: 0;
   outline: none;
 }
+
 .lift-button {
   position: absolute;
   top: 10px;
