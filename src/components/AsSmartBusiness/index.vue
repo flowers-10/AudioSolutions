@@ -1,5 +1,6 @@
 <template>
   <canvas class="webgl"></canvas>
+  <button class="lift-button" @click="onSwitchModels">切换场景</button>
 </template>
 
 <script setup lang="ts">
@@ -14,6 +15,51 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 import * as dat from "lil-gui";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+const onSwitchModels = () => {
+  smartBusiness.children.forEach((item) => {
+    if (item.name.includes("building-main")) {
+      smartBusiness.remove(item);
+      smartBusiness.add(lift)
+      smartBusiness.add(buildingTransparent)
+    }else {
+      smartBusiness.remove(lift)
+      smartBusiness.remove(buildingTransparent)
+      smartBusiness.add(buildingMain)
+    }
+  });
+};
+const smartBusiness = new THREE.Group();
+/* Loaders */
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("static/draco/");
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+let buildingTransparent:any = null;
+let lift:any = null;
+let buildingMain:any = null;
+
+gltfLoader.load(
+  "static/models/smartBusiness/building-transparent.glb",
+  (gltf) => {
+    const model = gltf.scene;
+    model.name = "building-transparent";
+    buildingTransparent = model;
+  }
+);
+gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
+  const model = gltf.scene;
+  model.name = "lift";
+  lift = model;
+});
+
+gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
+  const model = gltf.scene;
+  model.name = "building-main";
+  buildingMain = model;
+});
+
 onMounted(async () => {
   /* Debug */
   const gui = new dat.GUI();
@@ -22,24 +68,14 @@ onMounted(async () => {
   const canvas = document.querySelector("canvas.webgl");
   // Scene
   const scene = new THREE.Scene();
-  /* Loaders */
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("static/draco/");
 
-  const gltfLoader = new GLTFLoader();
-  gltfLoader.setDRACOLoader(dracoLoader);
   /* Object */
-  const smartBusiness = new THREE.Group();
   gltfLoader.load("static/models/smartBusiness/plane.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "plane";
     smartBusiness.add(model);
   });
-  gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "building-main";
-    smartBusiness.add(model);
-  });
+
   gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "building-other";
@@ -61,44 +97,23 @@ onMounted(async () => {
     smartBusiness.add(model);
   });
   // all models
+  setTimeout(() => {
+    smartBusiness.add(buildingMain)
+  }, 1000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
+  const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
 
-  // 围栏
-  const c = [
-    -125,
-    -20, //顶点1坐标
-    210,
-    -40, //顶点2坐标
-    210,
-    60, //顶点3坐标
-    180,
-    165, //顶点4坐标
-    -130,
-    134, //顶点5坐标
-    -125,
-    -20, //顶点6坐标  和顶点1重合
+  // wall Vertex
+  const posArr = [
+    -125, -20, 0, 210, -40, 0, 210, -40, 40, -125, -20, 0, 210, -40, 40, -125,
+    -20, 40, 210, -40, 0, 210, 60, 0, 210, 60, 40, 210, -40, 0, 210, 60, 40,
+    210, -40, 40, 210, 60, 0, 180, 165, 0, 180, 165, 40, 210, 60, 0, 180, 165,
+    40, 210, 60, 40, 180, 165, 0, -130, 134, 0, -130, 134, 40, 180, 165, 0,
+    -130, 134, 40, 180, 165, 40, -130, 134, 0, -125, -20, 0, -125, -20, 40,
+    -130, 134, 0, -125, -20, 40, -130, 134, 40,
   ];
 
-  const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
-  const posArr = [];
-  const h = 40;
-  for (var i = 0; i < c.length - 2; i += 2) {
-    // 三角形1  三个顶点坐标
-    posArr.push(
-      c[i],
-      c[i + 1],
-      0,
-      c[i + 2],
-      c[i + 3],
-      0,
-      c[i + 2],
-      c[i + 3],
-      h
-    );
-    // 三角形2  三个顶点坐标
-    posArr.push(c[i], c[i + 1], 0, c[i + 2], c[i + 3], h, c[i], c[i + 1], h);
-  }
   // 设置几何体attributes属性的位置position属性
   geometry.attributes.position = new THREE.BufferAttribute(
     new Float32Array(posArr),
@@ -131,6 +146,7 @@ onMounted(async () => {
     transparent: true,
   });
   const mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
+  mesh.name = "wall";
   mesh.rotateX(-Math.PI / 2);
   smartBusiness.add(mesh);
 
@@ -197,7 +213,7 @@ onMounted(async () => {
 
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
-    material.uniforms.iTime.value = elapsedTime
+    material.uniforms.iTime.value = elapsedTime;
     controls.update();
     // renderer.render(scene, camera);
     // processing
@@ -219,5 +235,10 @@ onMounted(async () => {
   top: 0;
   left: 0;
   outline: none;
+}
+.lift-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 </style>
