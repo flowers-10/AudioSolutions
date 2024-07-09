@@ -95,7 +95,7 @@ onMounted(async () => {
       const oldMaterial: THREE.Material = item.material
       buildingOtherMaterial = new THREE.ShaderMaterial({
         uniforms: {
-          height: { value: 20 },
+          height: { value: 0 },
           uFlowColor: {
             value: new THREE.Color('#5588aa'),
           },

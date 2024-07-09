@@ -13,14 +13,14 @@ uniform vec3 uCityColor;
 
 void main(){   
     vec3 distColor = uCityColor;
-    float topY = vPosition.z + 100.;
-    // if(height>vPosition.z && height<topY){
+    // float topY = vPosition.y +350.;
+    // if(height>vPosition.y && height<topY){
     //     // 颜色渐变
-    //     float dIndex = sin((height - vPosition.z) / 10.0 * 3.14);
+    //     float dIndex = sin((height - vPosition.y) / 10.0 * 3.14);
     //     distColor = mix(uFlowColor, distColor, 1. - dIndex);
     // }
     //定位当前点位位置
-    vec2 position2D =vec2(vPosition.x,vPosition.y);
+    vec2 position2D =vec2(vPosition.x,vPosition.z);
     //求点到原点的距离
     float Len= distanceTo(position2D,vec2(0,0));
     // 30 *30.0+130
