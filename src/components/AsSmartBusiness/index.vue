@@ -16,6 +16,8 @@ import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 import * as dat from "lil-gui";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 import gsap from 'gsap'
+import buildingOtherVertex from "@shaders/buildingOther/vertex.glsl";
+import buildingOtherFragment from "@shaders/buildingOther/fragment.glsl";
 
 
 const onSwitchModels = () => {
@@ -54,12 +56,12 @@ gltfLoader.load(
 gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
   const model = gltf.scene;
   model.name = "lift";
-  
-  model.children[0].children.forEach(item => {
-      console.log(item);
-      // todo
-     gsap.to(item.position,{y:200,direction:1000})
-    })
+
+  model.children[2].children.forEach(item => {
+    // console.log(item);
+    // todo
+    gsap.to(item.position, { y: 200, direction: 1000 })
+  })
   lift = model;
 });
 
@@ -85,36 +87,30 @@ onMounted(async () => {
     smartBusiness.add(model);
   });
 
+  let buildingOtherMaterial: THREE.ShaderMaterial
   gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "building-other";
     model.children[0].children.forEach((item: any) => {
-      const old: THREE.Material = item.material
-      const material = new CustomShaderMaterial({
-        baseMaterial: old,
+      const oldMaterial: THREE.Material = item.material
+      buildingOtherMaterial = new THREE.ShaderMaterial({
         uniforms: {
-          iTime: { value: 0 },
+          height: { value: 20 },
+          uFlowColor: {
+            value: new THREE.Color('#5588aa'),
+          },
+          uCityColor: {
+            value: new THREE.Color('#1B3045'),
+          },
         },
-        vertexShader: `
-      varying vec3 vPosition;
-      void main(){   
-        csm_PositionRaw = projectionMatrix * modelViewMatrix * vec4(csm_Position, 1.0);
-        vPosition = csm_Position;
-    }`,
-        fragmentShader: `
-      uniform float iTime;
-      varying vec3 vPosition;
-
-      void main(){   
-        csm_FragColor.a = 0.6;
-      }  
-    `,
-        side: THREE.DoubleSide,
+        vertexShader: buildingOtherVertex,
+        fragmentShader: buildingOtherFragment,
+        // side: THREE.DoubleSide,
         transparent: true,
       });
-      item.material = material
+      item.material = buildingOtherMaterial
     })
-    smartBusiness.add(model);
+    smartBusiness.add(model.children[0]);
   });
   gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
     const model = gltf.scene;
@@ -126,11 +122,11 @@ onMounted(async () => {
     model.name = "road-old";
     smartBusiness.add(model);
   });
-  // gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
-  //   const model = gltf.scene;
-  //   model.name = "road";
-  //   smartBusiness.add(model);
-  // });
+  gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
+    const model = gltf.scene;
+    model.name = "road";
+    smartBusiness.add(model);
+  });
   // all models
   setTimeout(() => {
     smartBusiness.add(buildingMain)
@@ -206,7 +202,7 @@ onMounted(async () => {
     75,
     sizes.width / sizes.height,
     20,
-    2000
+    10000
   );
   camera.position.set(-65, 45, 116);
   scene.add(camera);
@@ -249,6 +245,16 @@ onMounted(async () => {
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
     material.uniforms.iTime.value = elapsedTime;
+
+    if (buildingOtherMaterial && buildingOtherMaterial.hasOwnProperty('uniforms')) {
+      if (buildingOtherMaterial.uniforms.height.value > 50) {
+        buildingOtherMaterial.uniforms.height.value = 0
+      } else {
+        buildingOtherMaterial.uniforms.height.value += 0.1
+      }
+
+    }
+
     controls.update();
     // renderer.render(scene, camera);
     // processing
