@@ -15,21 +15,20 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 import * as dat from "lil-gui";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
-import gsap from 'gsap'
+import gsap from "gsap";
 import buildingOtherVertex from "@shaders/buildingOther/vertex.glsl";
 import buildingOtherFragment from "@shaders/buildingOther/fragment.glsl";
-
 
 const onSwitchModels = () => {
   smartBusiness.children.forEach((item) => {
     if (item.name.includes("building-main")) {
       smartBusiness.remove(item);
-      smartBusiness.add(lift)
-      smartBusiness.add(buildingTransparent)
+      smartBusiness.add(lift);
+      smartBusiness.add(buildingTransparent);
     } else {
-      smartBusiness.remove(lift)
-      smartBusiness.remove(buildingTransparent)
-      smartBusiness.add(buildingMain)
+      smartBusiness.remove(lift);
+      smartBusiness.remove(buildingTransparent);
+      smartBusiness.add(buildingMain);
     }
   });
 };
@@ -57,11 +56,11 @@ gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
   const model = gltf.scene;
   model.name = "lift";
 
-  model.children[2].children.forEach(item => {
+  model.children[2].children.forEach((item) => {
     // console.log(item);
     // todo
-    gsap.to(item.position, { y: 200, direction: 1000 })
-  })
+    gsap.to(item.position, { y: 200, direction: 1000 });
+  });
   lift = model;
 });
 
@@ -87,29 +86,30 @@ onMounted(async () => {
     smartBusiness.add(model);
   });
 
-  let buildingOtherMaterial: THREE.ShaderMaterial
+  let buildingOtherMaterial: THREE.ShaderMaterial;
+  const buildingOtherUniforms = {
+    height: { value: 0 },
+    uFlowColor: {
+      value: new THREE.Color("#5588aa"),
+    },
+    uCityColor: {
+      value: new THREE.Color("#1B3045"),
+    },
+  };
   gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "building-other";
     model.children[0].children.forEach((item: any) => {
-      const oldMaterial: THREE.Material = item.material
+      const oldMaterial: THREE.Material = item.material;
       buildingOtherMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          height: { value: 0 },
-          uFlowColor: {
-            value: new THREE.Color('#5588aa'),
-          },
-          uCityColor: {
-            value: new THREE.Color('#1B3045'),
-          },
-        },
+        uniforms:buildingOtherUniforms,
         vertexShader: buildingOtherVertex,
         fragmentShader: buildingOtherFragment,
         // side: THREE.DoubleSide,
         transparent: true,
       });
-      item.material = buildingOtherMaterial
-    })
+      item.material = buildingOtherMaterial;
+    });
     smartBusiness.add(model.children[0]);
   });
   gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
@@ -129,7 +129,7 @@ onMounted(async () => {
   });
   // all models
   setTimeout(() => {
-    smartBusiness.add(buildingMain)
+    smartBusiness.add(buildingMain);
   }, 2000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
@@ -246,14 +246,13 @@ onMounted(async () => {
     const elapsedTime = clock.getElapsedTime();
     material.uniforms.iTime.value = elapsedTime;
 
-    if (buildingOtherMaterial && buildingOtherMaterial.hasOwnProperty('uniforms')) {
-      if (buildingOtherMaterial.uniforms.height.value > 50) {
-        buildingOtherMaterial.uniforms.height.value = 0
+    
+      if (buildingOtherUniforms.height.value > 50) {
+        buildingOtherUniforms.height.value = 0;
       } else {
-        buildingOtherMaterial.uniforms.height.value += 0.1
+        buildingOtherUniforms.height.value += 0.1;
       }
 
-    }
 
     controls.update();
     // renderer.render(scene, camera);

@@ -27,7 +27,10 @@ void main(){
       if(Len>height*30.0&&Len<(height*30.0+130.0)){
         // 颜色渐变
         float dIndex = sin((Len - height * 30.0) / 130.0 * 3.14);
+
+        // 随便选一种都行
         distColor= mix(uFlowColor, distColor, 1.0 - dIndex);
+        // distColor= mix(uFlowColor, distColor, 1. - height / 50.);
     }
-    gl_FragColor = vec4(distColor,1);
+    gl_FragColor = vec4(distColor,0.7);
 }  
