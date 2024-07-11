@@ -3,7 +3,7 @@
     <!-- <AsEthereal/> -->
     <!-- <AsAudio /> -->
     <!-- <AsArtful/> -->
-    <AsSmartBusiness />
+    <AsyncChild />
   </div>
 </template>
 
@@ -11,7 +11,17 @@
 import AsEthereal from '@components/AsEthereal/index.vue'
 import AsAudio from '@components/AsAudio/index.vue'
 import AsArtful from '@components/AsArtful/index.vue'
-import AsSmartBusiness from '@components/AsSmartBusiness/index.vue'
+// import AsSmartBusiness from '@components/AsSmartBusiness/index.vue'
+import { defineAsyncComponent } from 'vue';
+
+const AsyncChild = defineAsyncComponent({
+  loader: () => import('@components/AsSmartBusiness/index.vue')
+
+})
+
+// console.log(AsyncChild,1111);
+
+
 
 </script>
 

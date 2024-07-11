@@ -89,6 +89,7 @@ onMounted(async () => {
   let buildingOtherMaterial: THREE.ShaderMaterial;
   const buildingOtherUniforms = {
     height: { value: 0 },
+    maxHeight: {value : 50},
     uFlowColor: {
       value: new THREE.Color("#5588aa"),
     },
@@ -112,25 +113,25 @@ onMounted(async () => {
     });
     smartBusiness.add(model.children[0]);
   });
-  gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "tree";
-    smartBusiness.add(model);
-  });
-  gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "road-old";
-    smartBusiness.add(model);
-  });
-  gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "road";
-    smartBusiness.add(model);
-  });
+  // gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
+  //   const model = gltf.scene;
+  //   model.name = "tree";
+  //   smartBusiness.add(model);
+  // });
+  // gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
+  //   const model = gltf.scene;
+  //   model.name = "road-old";
+  //   smartBusiness.add(model);
+  // });
+  // gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
+  //   const model = gltf.scene;
+  //   model.name = "road";
+  //   smartBusiness.add(model);
+  // });
   // all models
-  setTimeout(() => {
-    smartBusiness.add(buildingMain);
-  }, 2000);
+  // setTimeout(() => {
+  //   smartBusiness.add(buildingMain);
+  // }, 2000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
   const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
@@ -179,7 +180,7 @@ onMounted(async () => {
   const mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
   mesh.name = "wall";
   mesh.rotateX(-Math.PI / 2);
-  smartBusiness.add(mesh);
+  // smartBusiness.add(mesh);
 
   /* Lights */
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
@@ -247,7 +248,7 @@ onMounted(async () => {
     material.uniforms.iTime.value = elapsedTime;
 
     
-      if (buildingOtherUniforms.height.value > 50) {
+      if (buildingOtherUniforms.height.value > buildingOtherUniforms.maxHeight.value) {
         buildingOtherUniforms.height.value = 0;
       } else {
         buildingOtherUniforms.height.value += 0.1;
