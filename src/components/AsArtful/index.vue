@@ -68,7 +68,7 @@
       },
     }
     const material = new THREE.ShaderMaterial({
-      vertexShader: shaderType.o.vertex,
+      vertexShader: shaderType.v.vertex,
       fragmentShader: shaderType.v.fragment,
       side: THREE.DoubleSide,
       transparent: true,

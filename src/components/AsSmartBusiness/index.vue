@@ -202,7 +202,7 @@ onMounted(async () => {
   const mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
   mesh.name = "wall";
   mesh.rotateX(-Math.PI / 2);
-  // smartBusiness.add(mesh);
+  smartBusiness.add(mesh);
 
   /* Lights */
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
