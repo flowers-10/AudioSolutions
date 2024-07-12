@@ -14,14 +14,9 @@ uniform vec3 uCityColor;
 
 void main() {
     vec3 distColor = uCityColor;
-    float topY = vPosition.y / maxHeight;
-    float maxTopY = topY + 10.;
     // Special effect of rising light band
-    // if(height > topY && height < maxTopY) {
-    //     // Color gradient
-    //     float dIndex = sin((height - 20.) / maxHeight * 3.14);
-    //     distColor = mix(uFlowColor, distColor,  1. - dIndex);
-    // }
+    float dIndex = sin((iTime * 20. - vPosition.y) / maxHeight * 2.);
+    distColor = mix(uFlowColor, distColor, dIndex);
 
     // Locate the current point position
     vec2 position2D = vec2(vPosition.x, vPosition.z);
@@ -33,10 +28,10 @@ void main() {
         // choose any type of effect
         // 1.color gradient
         float dIndex = sin((Len - height * frequency) / maxHeight * 3.14);
-        distColor = mix(uFlowColor, distColor, 1.0 - dIndex);
+        distColor = mix(uFlowColor, distColor, .7 - dIndex);
 
         // 2.fade effect
         // distColor= mix(uFlowColor, distColor, 1. - height / maxHeight);
     }
-    gl_FragColor = vec4(distColor, 0.7);
+    gl_FragColor = vec4(distColor, 0.2);
 }

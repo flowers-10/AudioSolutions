@@ -25,13 +25,34 @@ const onSwitchModels = () => {
       smartBusiness.remove(item);
       smartBusiness.add(lift);
       smartBusiness.add(buildingTransparent);
+      createGsapAnimation(camera.position, new THREE.Vector3(-20, 80, 200));
+
     } else {
       smartBusiness.remove(lift);
       smartBusiness.remove(buildingTransparent);
       smartBusiness.add(buildingMain);
+      createGsapAnimation(camera.position, new THREE.Vector3(-65, 60, 116));
+
     }
   });
 };
+
+let camera:THREE.PerspectiveCamera;
+
+const createGsapAnimation = (
+  position: THREE.Vector3,
+  position_: THREE.Vector3
+) => {
+  return gsap.to(position, {
+    ...position_,
+    duration: 1,
+    ease: "none",
+    repeat: 0,
+    yoyo: false,
+    yoyoEase: true,
+  });
+};
+
 const smartBusiness = new THREE.Group();
 /* Loaders */
 const dracoLoader = new DRACOLoader();
@@ -88,8 +109,9 @@ onMounted(async () => {
 
   let buildingOtherMaterial: THREE.ShaderMaterial;
   const buildingOtherUniforms = {
+    iTime: { value: 0 },
     height: { value: 0 },
-    maxHeight: {value : 50},
+    maxHeight: { value: 50 },
     uFlowColor: {
       value: new THREE.Color("#5588aa"),
     },
@@ -103,7 +125,7 @@ onMounted(async () => {
     model.children[0].children.forEach((item: any) => {
       const oldMaterial: THREE.Material = item.material;
       buildingOtherMaterial = new THREE.ShaderMaterial({
-        uniforms:buildingOtherUniforms,
+        uniforms: buildingOtherUniforms,
         vertexShader: buildingOtherVertex,
         fragmentShader: buildingOtherFragment,
         // side: THREE.DoubleSide,
@@ -113,25 +135,26 @@ onMounted(async () => {
     });
     smartBusiness.add(model.children[0]);
   });
-  // gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
-  //   const model = gltf.scene;
-  //   model.name = "tree";
-  //   smartBusiness.add(model);
-  // });
-  // gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
-  //   const model = gltf.scene;
-  //   model.name = "road-old";
-  //   smartBusiness.add(model);
-  // });
-  // gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
-  //   const model = gltf.scene;
-  //   model.name = "road";
-  //   smartBusiness.add(model);
-  // });
+  gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
+    const model = gltf.scene;
+    model.name = "tree";
+    smartBusiness.add(model);
+  });
+  gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
+    const model = gltf.scene;
+    model.name = "road-old";
+    smartBusiness.add(model);
+  });
+  gltfLoader.load("static/models/smartBusiness/road.glb", (gltf) => {
+    const model = gltf.scene;
+    model.name = "road";
+    smartBusiness.add(model);
+  });
   // all models
-  // setTimeout(() => {
-  //   smartBusiness.add(buildingMain);
-  // }, 2000);
+  setTimeout(() => {
+    smartBusiness.add(buildingMain);
+    createGsapAnimation(camera.position, new THREE.Vector3(-65, 45, 116));
+  }, 2000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
   const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
@@ -199,17 +222,18 @@ onMounted(async () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   });
   /*Camera */
-  const camera = new THREE.PerspectiveCamera(
+  camera = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
     20,
     10000
   );
-  camera.position.set(-65, 45, 116);
+
   scene.add(camera);
   /* Controls */
   const controls = new OrbitControls(camera, canvas as HTMLElement);
   controls.enableDamping = true;
+  camera.position.set(-200, 200, -200);
   /* Renderer */
   const renderer = new THREE.WebGLRenderer({
     canvas: canvas as HTMLElement,
@@ -247,13 +271,14 @@ onMounted(async () => {
     const elapsedTime = clock.getElapsedTime();
     material.uniforms.iTime.value = elapsedTime;
 
-    
-      if (buildingOtherUniforms.height.value > buildingOtherUniforms.maxHeight.value) {
-        buildingOtherUniforms.height.value = 0;
-      } else {
-        buildingOtherUniforms.height.value += 0.1;
-      }
-
+    buildingOtherUniforms.iTime.value = elapsedTime;
+    if (
+      buildingOtherUniforms.height.value > buildingOtherUniforms.maxHeight.value
+    ) {
+      buildingOtherUniforms.height.value = 0;
+    } else {
+      buildingOtherUniforms.height.value += 0.1;
+    }
 
     controls.update();
     // renderer.render(scene, camera);
