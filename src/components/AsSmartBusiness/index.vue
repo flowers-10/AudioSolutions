@@ -31,8 +31,7 @@ const onSwitchModels = () => {
       smartBusiness.remove(lift);
       smartBusiness.remove(buildingTransparent);
       smartBusiness.add(buildingMain);
-      createGsapAnimation(camera.position, new THREE.Vector3(-65, 60, 116));
-
+      createGsapAnimation(camera.position, new THREE.Vector3(-40, 60, 166));
     }
   });
 };
@@ -45,7 +44,7 @@ const createGsapAnimation = (
 ) => {
   return gsap.to(position, {
     ...position_,
-    duration: 1,
+    duration: 1.5,
     ease: "none",
     repeat: 0,
     yoyo: false,
@@ -153,7 +152,7 @@ onMounted(async () => {
   // all models
   setTimeout(() => {
     smartBusiness.add(buildingMain);
-    createGsapAnimation(camera.position, new THREE.Vector3(-65, 45, 116));
+    createGsapAnimation(camera.position, new THREE.Vector3(-40, 60, 166));
   }, 2000);
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
@@ -277,7 +276,7 @@ onMounted(async () => {
     ) {
       buildingOtherUniforms.height.value = 0;
     } else {
-      buildingOtherUniforms.height.value += 0.1;
+      buildingOtherUniforms.height.value += 0.3;
     }
 
     controls.update();

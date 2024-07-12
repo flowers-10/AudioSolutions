@@ -15,14 +15,14 @@
   import * as THREE from "three";
   import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
   import * as dat from "lil-gui";
-  // import testVertexShader from "@shaders/test/vertex.glsl";
-  // import testFragmentShader from "@shaders/test/fragment.glsl";
+  import testVertexShader from "@shaders/test/vertex.glsl";
+  import testFragmentShader from "@shaders/test/fragment.glsl";
   
-  // import vaporwaveVertexShader from "@shaders/vaporwave/vertex.glsl";
-  // import vaporwaveFragmentShader from "@shaders/vaporwave/fragment.glsl";
+  import vaporwaveVertexShader from "@shaders/vaporwave/vertex.glsl";
+  import vaporwaveFragmentShader from "@shaders/vaporwave/fragment.glsl";
   
-  // import octagramsVertexShader from "@shaders/octagrams/vertex.glsl";
-  // import octagramsFragmentShader from "@shaders/octagrams/fragment.glsl";
+  import octagramsVertexShader from "@shaders/octagrams/vertex.glsl";
+  import octagramsFragmentShader from "@shaders/octagrams/fragment.glsl";
   
   import doubleDragonsVertexShader from "@shaders/doubleDragons/vertex.glsl";
   import doubleDragonsFragmentShader from "@shaders/doubleDragons/fragment.glsl";
@@ -49,9 +49,27 @@
     // Geometry
     const geometry = new THREE.PlaneGeometry(5, 5, 32, 32);
     // Material
+    const shaderType = {
+      t: {
+        vertex: testVertexShader,
+        fragment: testFragmentShader
+      },
+      v:{
+        vertex:vaporwaveVertexShader,
+        fragment:vaporwaveFragmentShader,
+      },
+      o:{
+        vertex:octagramsVertexShader,
+        fragment:octagramsFragmentShader,
+      },
+      d:{
+        vertex:doubleDragonsVertexShader,
+        fragment:doubleDragonsFragmentShader,
+      },
+    }
     const material = new THREE.ShaderMaterial({
-      vertexShader: doubleDragonsVertexShader,
-      fragmentShader: doubleDragonsFragmentShader,
+      vertexShader: shaderType.o.vertex,
+      fragmentShader: shaderType.v.fragment,
       side: THREE.DoubleSide,
       transparent: true,
       uniforms: {

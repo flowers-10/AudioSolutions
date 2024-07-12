@@ -16,7 +16,7 @@ void main() {
     vec3 distColor = uCityColor;
     // Special effect of rising light band
     float dIndex = sin((iTime * 20. - vPosition.y) / maxHeight * 2.);
-    distColor = mix(uFlowColor, distColor, dIndex);
+    // distColor = mix(uFlowColor, distColor, dIndex);
 
     // Locate the current point position
     vec2 position2D = vec2(vPosition.x, vPosition.z);
@@ -33,5 +33,5 @@ void main() {
         // 2.fade effect
         // distColor= mix(uFlowColor, distColor, 1. - height / maxHeight);
     }
-    gl_FragColor = vec4(distColor, 0.2);
+    gl_FragColor = vec4(distColor, 0.8);
 }
