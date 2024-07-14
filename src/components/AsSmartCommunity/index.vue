@@ -16,7 +16,9 @@ import * as dat from "lil-gui";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 import gsap from "gsap";
 import buildingOtherVertex from "@shaders/buildingOther/vertex.glsl";
+import planeVertex from "@shaders/plane/vertex.glsl";
 import buildingOtherFragment from "@shaders/buildingOther/fragment.glsl";
+import planeFragment from "@shaders/plane/fragment.glsl";
 
 let camera: THREE.PerspectiveCamera;
 
@@ -55,7 +57,7 @@ onMounted(async () => {
   const buildingOtherUniforms = {
     iTime: { value: 0 },
     height: { value: 0 },
-    maxHeight: { value: 30 },
+    maxHeight: { value: 10 },
     uFlowColor: {
       value: new THREE.Color("#5588aa"),
     },
@@ -67,30 +69,62 @@ onMounted(async () => {
     uniforms: buildingOtherUniforms,
     vertexShader: buildingOtherVertex,
     fragmentShader: buildingOtherFragment,
-    // side: THREE.DoubleSide,
+    side: THREE.DoubleSide,
     transparent: true,
   });
-  // gltfLoader.load("static/models/smartCommunity/preview2.glb", (gltf) => {
-  //   const model = gltf.scene;
-  //   scene.add(model);
-  // });
-
-  gltfLoader.load("static/models/smartCommunity/preview.glb", (gltf) => {
+  gltfLoader.load("static/models/smartCommunity/preview2.glb", (gltf) => {
     const model = gltf.scene;
-    model.children.forEach((child:any) => {
-      if (child.name === "氛围建筑") {
-        // child.material = buildingOtherMaterial
-      }
-    });
-
     scene.add(model);
   });
 
+  gltfLoader.load("static/models/smartCommunity/preview.glb", (gltf) => {
+    const model = gltf.scene;
+    let a: any = null;
+    model.children.forEach((child: any, index) => {
+      // console.log(child.name, 1111);
+      if (child.name === "氛围建筑") {
+        // a = child;
+        child.material = buildingOtherMaterial;
+      }
+    });
+    scene.add(model);
+  });
+  const texture = new THREE.TextureLoader().load("static/textures/plane.png");
+  const maskTexture = new THREE.TextureLoader().load(
+    "static/textures/mask.png"
+  );
+
+  const uniforms = {
+    iTexture: { value: texture },
+    iTime: { value: 0 },
+    maxTime: { value: 0 },
+  };
+  const geometry = new THREE.PlaneGeometry(350, 350, 32, 32);
+  const material = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    transparent: true,
+    opacity: 0,
+    vertexShader: planeVertex,
+    fragmentShader: planeFragment,
+  });
+  const material2 = new THREE.MeshBasicMaterial({
+    transparent: true,
+    opacity: 1,
+    map: maskTexture,
+  });
+  const plane = new THREE.Mesh(geometry, material);
+  const plane2 = new THREE.Mesh(geometry, material2);
+  plane.rotation.x = -Math.PI * 0.5;
+  plane2.rotation.x = -Math.PI * 0.5;
+  plane.position.y = -10;
+  plane2.position.y = -11;
+  scene.add(plane);
+  scene.add(plane2);
   scene.position.set(-40, 20, 20);
 
   /* Lights */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 10);
-  scene.add(ambientLight);
+  // const ambientLight = new THREE.AmbientLight(0xffffff, 10);
+  // scene.add(ambientLight);
   /* Sizes */
   const sizes = {
     width: window.innerWidth,
@@ -159,12 +193,17 @@ onMounted(async () => {
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
     buildingOtherUniforms.iTime.value = elapsedTime;
+    let x = buildingOtherUniforms.height.value / 2;
+    if (x > 2) {
+      x = 0;
+    }
+    plane2.scale.set(x, x, 1);
     if (
       buildingOtherUniforms.height.value > buildingOtherUniforms.maxHeight.value
     ) {
       buildingOtherUniforms.height.value = 0;
     } else {
-      buildingOtherUniforms.height.value += 0.1;
+      buildingOtherUniforms.height.value += 0.05;
     }
     controls.update();
     // renderer.render(scene, camera);
