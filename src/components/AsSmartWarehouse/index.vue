@@ -93,13 +93,13 @@ onMounted(async () => {
   camera = new THREE.PerspectiveCamera(
     75,
     sizes.width / sizes.height,
-    20,
-    10000
+    0.1,
+    1000
   );
 
   scene.add(camera);
-  camera.position.set(-100, 100, -100);
-  createGsapAnimation(camera.position, new THREE.Vector3(-20, 20, 20));
+  camera.position.set(100, 100, 100);
+  createGsapAnimation(camera.position, new THREE.Vector3(30, 10, 20));
 
   /* Controls */
   const controls = new OrbitControls(camera, canvas as HTMLElement);
