@@ -7,7 +7,7 @@
     <!-- 着色器案例 -->
     <!-- <AsArtful/> -->
     <!-- 智慧商圈 -->
-    <AsSmartBusiness />
+    <!-- <AsSmartBusiness /> -->
     <!-- 智慧物业 -->
     <!-- <AsSmartCommunity /> -->
     <!-- 智慧工厂 -->

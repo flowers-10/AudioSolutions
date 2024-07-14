@@ -65,27 +65,16 @@ onMounted(async () => {
     scene.add(model);
   });
 
-  gltfLoader.load("static/models/smartWarehouse/2.glb", (gltf) => {
+  gltfLoader.load("static/models/smartWarehouse/house.glb", (gltf) => {
     const model = gltf.scene;
     scene.add(model);
   });
-
-  const geometry = new THREE.PlaneGeometry(350, 350, 32, 32);
-  const material = new THREE.ShaderMaterial({
-    transparent: true,
-    opacity: 0,
-    vertexShader: planeVertex,
-    fragmentShader: planeFragment,
+  gltfLoader.load("static/models/smartWarehouse/3.glb", (gltf) => {
+    const model = gltf.scene;
+    scene.add(model);
   });
-  
-  const plane = new THREE.Mesh(geometry, material);
-  plane.rotation.x = -Math.PI * 0.5;
-  plane.position.y = -10;
-  scene.add(plane);
-  scene.position.set(-40, 20, 20);
-
   /* Lights */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 10);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(ambientLight);
   /* Sizes */
   const sizes = {
@@ -110,7 +99,7 @@ onMounted(async () => {
 
   scene.add(camera);
   camera.position.set(-100, 100, -100);
-  createGsapAnimation(camera.position, new THREE.Vector3(-20, 50, 30));
+  createGsapAnimation(camera.position, new THREE.Vector3(-20, 20, 20));
 
   /* Controls */
   const controls = new OrbitControls(camera, canvas as HTMLElement);
@@ -123,28 +112,6 @@ onMounted(async () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor("#111");
 
-  /* RenderPass */
-  const effectComposer = new EffectComposer(renderer);
-  effectComposer.setSize(sizes.width, sizes.height);
-  effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const renderPass = new RenderPass(scene, camera);
-  effectComposer.addPass(renderPass);
-  if (renderer.getPixelRatio() === 1 && !renderer.capabilities.isWebGL2) {
-    const smaaPass = new SMAAPass(sizes.width, sizes.height);
-    effectComposer.addPass(smaaPass);
-
-    console.log("Using SMAA");
-  }
-  // bloom
-  const unrealBloomPass = new UnrealBloomPass(
-    new THREE.Vector2(sizes.width, sizes.height),
-    0.2,
-    0.1,
-    0.05
-  );
-  effectComposer.addPass(unrealBloomPass);
-
   /* Animate */
   const clock = new THREE.Clock();
 
@@ -153,7 +120,6 @@ onMounted(async () => {
     controls.update();
     renderer.render(scene, camera);
     // processing
-    // effectComposer.render();
     window.requestAnimationFrame(tick);
   };
   tick();
