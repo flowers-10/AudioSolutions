@@ -9,13 +9,13 @@
     <!-- 智慧商圈 -->
     <!-- <AsSmartBusiness /> -->
     <!-- 智慧物业 -->
-    <!-- <AsSmartCommunity /> -->
+    <AsSmartCommunity />
     <!-- 智慧工厂 -->
     <!-- <AsSmartFactory/> -->
     <!-- 智慧仓库 -->
     <!-- <AsSmartWarehouse /> -->
      <!-- 智慧园区 -->
-      <AsSmartPark />
+      <!-- <AsSmartPark /> -->
   </div>
 </template>
 
