@@ -13,7 +13,9 @@
     <!-- 智慧工厂 -->
     <!-- <AsSmartFactory/> -->
     <!-- 智慧仓库 -->
-    <AsSmartWarehouse />
+    <!-- <AsSmartWarehouse /> -->
+     <!-- 智慧园区 -->
+      <AsSmartPark />
   </div>
 </template>
 
@@ -36,10 +38,13 @@ const AsSmartWarehouse = defineAsyncComponent({
   loader: () => import("@components/AsSmartWarehouse/index.vue"),
 });
 
+const AsSmartPark = defineAsyncComponent({
+  loader: () => import("@components/AsSmartPark/index.vue"),
+});
+
 // const AsSmartFactory = defineAsyncComponent({
 //   loader: () => import("@components/AsSmartFactory/index.vue"),
 // });
-// console.log(AsyncChild,1111);
 </script>
 
 <style scoped>
