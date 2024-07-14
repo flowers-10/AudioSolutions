@@ -26,7 +26,6 @@ const onSwitchModels = () => {
       smartBusiness.add(lift);
       smartBusiness.add(buildingTransparent);
       createGsapAnimation(camera.position, new THREE.Vector3(-20, 80, 200));
-
     } else {
       smartBusiness.remove(lift);
       smartBusiness.remove(buildingTransparent);
@@ -36,7 +35,7 @@ const onSwitchModels = () => {
   });
 };
 
-let camera:THREE.PerspectiveCamera;
+let camera: THREE.PerspectiveCamera;
 
 const createGsapAnimation = (
   position: THREE.Vector3,
@@ -75,12 +74,6 @@ gltfLoader.load(
 gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
   const model = gltf.scene;
   model.name = "lift";
-
-  model.children[2].children.forEach((item) => {
-    // console.log(item);
-    // todo
-    gsap.to(item.position, { y: 200, direction: 1000 });
-  });
   lift = model;
 });
 
@@ -121,17 +114,17 @@ onMounted(async () => {
   gltfLoader.load("static/models/smartBusiness/building-other.glb", (gltf) => {
     const model = gltf.scene;
     model.name = "building-other";
-    model.children[0].children.forEach((item: any) => {
-      const oldMaterial: THREE.Material = item.material;
-      buildingOtherMaterial = new THREE.ShaderMaterial({
-        uniforms: buildingOtherUniforms,
-        vertexShader: buildingOtherVertex,
-        fragmentShader: buildingOtherFragment,
-        // side: THREE.DoubleSide,
-        transparent: true,
-      });
-      item.material = buildingOtherMaterial;
-    });
+    // model.children[0].children.forEach((item: any) => {
+    //   const oldMaterial: THREE.Material = item.material;
+    //   buildingOtherMaterial = new THREE.ShaderMaterial({
+    //     uniforms: buildingOtherUniforms,
+    //     vertexShader: buildingOtherVertex,
+    //     fragmentShader: buildingOtherFragment,
+    //     // side: THREE.DoubleSide,
+    //     transparent: true,
+    //   });
+    //   item.material = buildingOtherMaterial;
+    // });
     smartBusiness.add(model.children[0]);
   });
   gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {

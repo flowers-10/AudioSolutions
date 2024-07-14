@@ -1,10 +1,19 @@
 <template>
   <div>
+    <!-- 大美中国 -->
     <!-- <AsEthereal/> -->
+    <!-- 音乐可视化 -->
     <!-- <AsAudio /> -->
+    <!-- 着色器案例 -->
     <!-- <AsArtful/> -->
-    <!-- <AsSmartBusiness /> -->
-     <AsSmartCommunity />
+    <!-- 智慧商圈 -->
+    <AsSmartBusiness />
+    <!-- 智慧物业 -->
+    <!-- <AsSmartCommunity /> -->
+    <!-- 智慧工厂 -->
+    <!-- <AsSmartFactory/> -->
+    <!-- 智慧仓库 -->
+    <AsSmartWarehouse />
   </div>
 </template>
 
@@ -21,8 +30,15 @@ const AsSmartBusiness = defineAsyncComponent({
 
 const AsSmartCommunity = defineAsyncComponent({
   loader: () => import("@components/AsSmartCommunity/index.vue"),
-})
+});
 
+const AsSmartWarehouse = defineAsyncComponent({
+  loader: () => import("@components/AsSmartWarehouse/index.vue"),
+});
+
+// const AsSmartFactory = defineAsyncComponent({
+//   loader: () => import("@components/AsSmartFactory/index.vue"),
+// });
 // console.log(AsyncChild,1111);
 </script>
 
