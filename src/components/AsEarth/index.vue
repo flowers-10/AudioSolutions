@@ -186,14 +186,14 @@ camera.position.z = 4;
 scene.add(camera);
 
 // Controls
-const controls = new OrbitControls(camera, canvas);
+const controls = new OrbitControls(camera, canvas as HTMLCanvasElement);
 controls.enableDamping = true;
 
 /**
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
+  canvas: canvas as HTMLCanvasElement,
   antialias: true,
 });
 renderer.setSize(sizes.width, sizes.height);
