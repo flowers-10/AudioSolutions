@@ -9,13 +9,15 @@
     <!-- 智慧商圈 -->
     <!-- <AsSmartBusiness /> -->
     <!-- 智慧物业 -->
-    <AsSmartCommunity />
+    <!-- <AsSmartCommunity /> -->
     <!-- 智慧工厂 -->
     <!-- <AsSmartFactory/> -->
     <!-- 智慧仓库 -->
     <!-- <AsSmartWarehouse /> -->
-     <!-- 智慧园区 -->
-      <!-- <AsSmartPark /> -->
+    <!-- 智慧园区 -->
+    <!-- <AsSmartPark /> -->
+    <!-- 3D地球 -->
+    <AsEarth />
   </div>
 </template>
 
@@ -40,6 +42,10 @@ const AsSmartWarehouse = defineAsyncComponent({
 
 const AsSmartPark = defineAsyncComponent({
   loader: () => import("@components/AsSmartPark/index.vue"),
+});
+
+const AsEarth = defineAsyncComponent({
+  loader: () => import("@components/AsEarth/index.vue"),
 });
 
 // const AsSmartFactory = defineAsyncComponent({
