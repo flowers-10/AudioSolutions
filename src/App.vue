@@ -3,7 +3,7 @@
     <!-- 大美中国 -->
     <!-- <AsEthereal/> -->
     <!-- 音乐可视化 -->
-    <!-- <AsAudio /> -->
+    <AsAudio />
     <!-- 着色器案例 -->
     <!-- <AsArtful/> -->
     <!-- 智慧商圈 -->
@@ -17,7 +17,7 @@
     <!-- 智慧园区 -->
     <!-- <AsSmartPark /> -->
     <!-- 3D地球 -->
-    <AsEarth />
+    <!-- <AsEarth /> -->
   </div>
 </template>
 

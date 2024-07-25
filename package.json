@@ -1,7 +1,7 @@
 {
   "name": "audio-solutions",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/types": "^7.24.9",
     "@types/howler": "^2.2.11",
     "@types/three": "^0.164.0",
     "autoprefixer": "^10.4.19",

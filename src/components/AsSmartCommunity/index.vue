@@ -90,7 +90,7 @@ onMounted(async () => {
     const model = gltf.scene;
     let a: any = null;
     model.children.forEach((child: any, index) => {
-      // console.log(child.name, 1111);
+      console.log(child, 1111);
       if (child.name === "氛围建筑") {
         // a = child;
         child.material = buildingOtherMaterial;
