@@ -85,7 +85,7 @@
     });
   
     // 获取音频
-    const response = await fetch("../../../static/audio/Avicii-WeBurn.mp3");
+    const response = await fetch("/audio/Avicii-WeBurn.mp3");
     const arrayBuffer = await response.arrayBuffer();
   
     const audioContext = new window.AudioContext();
