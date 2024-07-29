@@ -12,6 +12,8 @@
 import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import WeBurnMusic from "@assets/audio/Avicii-WeBurn.mp3";
+
 import visualVertex from "@shaders/visual/vertex.glsl";
 import visualFragment from "@shaders/visual/fragment.glsl";
 
@@ -445,8 +447,7 @@ const updateOffsetData = () => {
 const play = () => {
   const listener = new THREE.AudioListener();
   const audio = new THREE.Audio(listener);
-  const file = "../../static/audio/Avicii-WeBurn.mp3";
-  mediaElement.value = new Audio(file);
+  mediaElement.value = new Audio(WeBurnMusic);
   mediaElement.value.play();
   audio.setMediaElementSource(mediaElement.value);
   analyser.value = new THREE.AudioAnalyser(audio, fftSize);
