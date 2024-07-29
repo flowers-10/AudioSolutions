@@ -1,1 +1,0 @@
-gl_FragColor = vec4(mix(gl_FragColor.xyz, u_HeightFogColor, v_HeightFogStrength), gl_FragColor.a);
