@@ -23,7 +23,7 @@ import octagramsFragmentShader from "@shaders/octagrams/fragment.glsl";
 
 import doubleDragonsVertexShader from "@shaders/doubleDragons/vertex.glsl";
 import doubleDragonsFragmentShader from "@shaders/doubleDragons/fragment.glsl";
-import WeBurnMusic from "@static/audio/Avicii-WeBurn.mp3";
+import WeBurnMusic from "@assets/audio/Avicii-WeBurn.mp3";
 
 const sSource = ref();
 onMounted(async () => {
