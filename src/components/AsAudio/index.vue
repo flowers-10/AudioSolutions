@@ -15,8 +15,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import WeBurnMusic from "@assets/audio/Avicii-WeBurn.mp3";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 
-import visualVertex from "@shaders/visual/vertex.glsl";
-import visualFragment from "@shaders/visual/fragment.glsl";
+import visualVertex from "@shaders/visual/vertex2.glsl";
+import visualFragment from "@shaders/visual/fragment2.glsl";
 
 const mediaElement = ref();
 const analyser = ref();

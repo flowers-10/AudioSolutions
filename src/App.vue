@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 音乐可视化 -->
     <AsAudio />
   </div>
 </template>

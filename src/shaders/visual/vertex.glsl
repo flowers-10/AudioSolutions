@@ -1,8 +1,6 @@
 #include './simplexNosie.glsl
 
-attribute float aOffset;
 uniform float uTime;
-uniform float tAudioData;
 uniform float uStrength;
 varying vec3 vN;
 varying vec2 vUv;
