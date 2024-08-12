@@ -38,6 +38,7 @@ const init = () => {
     uTime: { value: 0 },
     tAudioData: { value: 0 },
     uStrength: { value: 0 },
+    iResolution: { value: new THREE.Vector2() },
   };
   const material = new CustomShaderMaterial({
     baseMaterial: THREE.MeshStandardMaterial,
@@ -94,6 +95,7 @@ const init = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   };
+  uniform.value.iResolution.value.set(sizes.width, sizes.height);
   window.addEventListener("resize", () => {
     // Update sizes
     sizes.width = window.innerWidth;
