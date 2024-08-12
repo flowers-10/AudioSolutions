@@ -39,14 +39,6 @@ const init = () => {
     tAudioData: { value: 0 },
     uStrength: { value: 0 },
   };
-
-  // const material = new THREE.ShaderMaterial({
-  //   uniforms: uniform.value,
-  //   vertexShader: visualVertex,
-  //   fragmentShader: visualFragment,
-  //   // wireframe: true,
-  // });
-
   const material = new THREE.MeshStandardMaterial();
   material.roughness = 0.7;
   const depthMaterial = new THREE.MeshDepthMaterial({
@@ -56,7 +48,6 @@ const init = () => {
   material.onBeforeCompile = (shader) => {
     shader.uniforms.uTime = uniform.value.uTime;
     shader.uniforms.uStrength = uniform.value.uStrength;
-
     shader.vertexShader = shader.vertexShader.replace(
       "#include <common>",
       `
@@ -164,7 +155,6 @@ float simplexNoise4d(vec4 v)
             
         `
     );
-
     shader.vertexShader = shader.vertexShader.replace(
       "#include <fog_vertex>",
       `#include <fog_vertex>
@@ -182,7 +172,6 @@ float simplexNoise4d(vec4 v)
         uniform float uStrength;
       `
     );
-
     shader.fragmentShader = shader.fragmentShader.replace(
       "#include <opaque_fragment>",
       `#include <opaque_fragment>
@@ -302,7 +291,6 @@ float simplexNoise4d(vec4 v)
             
         `
     );
-
     shader.vertexShader = shader.vertexShader.replace(
       "#include <clipping_planes_vertex>",
       `#include <clipping_planes_vertex>
@@ -312,17 +300,13 @@ float simplexNoise4d(vec4 v)
           gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
         `
     );
-    console.log(shader.vertexShader);
-    
-  
   };
-  // const geometry = new THREE.SphereGeometry(0.5, 256, 256);
   const geometry = new THREE.IcosahedronGeometry(2.5, 50);
   mesh = new THREE.Mesh(geometry, material);
-  mesh.customDepthMaterial = depthMaterial
+  // mesh.customDepthMaterial = depthMaterial
   mesh.castShadow = true;
-
   scene.add(mesh);
+
   const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(25, 25),
     new THREE.MeshStandardMaterial()
@@ -342,7 +326,6 @@ float simplexNoise4d(vec4 v)
   const directionalLight = new THREE.DirectionalLight("#ffffff", 0.3);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(1024, 1024);
-  // directionalLight.shadow.camera.near = 1;
   directionalLight.shadow.camera.far = 40;
   directionalLight.castShadow = true;
   directionalLight.position.set(2, 2, -2);
@@ -398,7 +381,6 @@ float simplexNoise4d(vec4 v)
 
   // Controls
   controls = new OrbitControls(camera, canvas as HTMLElement);
-  // controls.enableDamping = true;
 };
 
 const tick = () => {
@@ -422,16 +404,6 @@ const tick = () => {
 };
 
 const updateOffsetData = () => {
-  // if (analyser.value?.getFrequencyData) {
-  //   analyser.value.getFrequencyData();
-  //   const analyserData = analyser.value?.data;
-  //   const length = mesh.geometry.attributes.aOffset.count;
-  //   for (let i = 0; i < length; i++) {
-  //     const offset = analyserData[i % analyserData.length] / 255;
-  //     mesh.geometry.attributes.aOffset.array[i] = offset;
-  //   }
-  //   mesh.geometry.attributes.aOffset.needsUpdate = true;
-  // }
   if (analyser.value?.getFrequencyData) {
     analyser.value.getFrequencyData();
     const analyserData = analyser.value?.data;
