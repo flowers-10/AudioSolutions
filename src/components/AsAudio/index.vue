@@ -38,7 +38,8 @@ const init = () => {
     uTime: { value: 0 },
     tAudioData: { value: 0 },
     uStrength: { value: 0 },
-    iResolution: { value: new THREE.Vector2() },
+    uResolution: { value: new THREE.Vector2() },
+    uSum: { value: 0 }
   };
   const material = new CustomShaderMaterial({
     baseMaterial: THREE.MeshStandardMaterial,
@@ -95,7 +96,7 @@ const init = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   };
-  uniform.value.iResolution.value.set(sizes.width, sizes.height);
+  uniform.value.uResolution.value.set(sizes.width, sizes.height);
   window.addEventListener("resize", () => {
     // Update sizes
     sizes.width = window.innerWidth;
@@ -159,6 +160,7 @@ const updateOffsetData = (elapsedTime: number) => {
     }
     sum /= analyserData.length * 25.5;
     uniform.value.uStrength.value = sum;
+    uniform.value.uSum.value += sum * 0.01;
   }
 };
 
@@ -172,6 +174,7 @@ const play = () => {
 };
 
 const pause = () => {
+  uniform.value.uSum.value = 0;
   mediaElement.value.pause();
 };
 onMounted(async () => {

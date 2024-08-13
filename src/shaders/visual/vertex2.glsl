@@ -1,6 +1,8 @@
 #include './perlin3DNosie.glsl
+#include './simplexNosie.glsl
 
 uniform float uTime;
+uniform float uSum;
 uniform float uStrength;
 varying vec3 vN;
 varying vec2 vUv;
@@ -14,16 +16,14 @@ void main() {
     float uSmallWavesSpeed = 0.2;
     float uSmallIterations = 4.;
     float uBigWavesSpeed = 0.75;
-
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
     // Elevation
-    float elevation = sin(modelPosition.x * uBigWavesFrequency.x * uStrength * 0.5  + uTime * uBigWavesSpeed ) *
-        sin(modelPosition.z * uBigWavesFrequency.y  + uTime * uBigWavesSpeed * uStrength  * 0.5) *
+    float elevation =  sin(modelPosition.x * uBigWavesFrequency.y  +  uBigWavesSpeed * uSum) *
         uBigWavesElevation ;
     for(float i = 1.0; i <= uSmallIterations; i++) {
-        elevation -= abs(cnoise(vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i);
+        elevation -= abs(cnoise(vec3(modelPosition.xz * uSmallWavesFrequency * i * uStrength, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i);
     }
-    modelPosition.xy += elevation;
+    modelPosition.xyz += elevation;
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
     csm_PositionRaw = projectedPosition;
