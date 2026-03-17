@@ -3,7 +3,7 @@
     <!-- 大美中国 -->
     <!-- <AsEthereal/> -->
     <!-- 音乐可视化 -->
-    <AsAudio />
+    <!-- <AsAudio /> -->
     <!-- 着色器案例 -->
     <!-- <AsArtful/> -->
     <!-- 智慧商圈 -->
@@ -11,7 +11,7 @@
     <!-- 智慧物业 -->
     <!-- <AsSmartCommunity /> -->
     <!-- 智慧工厂 -->
-    <!-- <AsSmartFactory/> -->
+    <AsSmartFactory/>
     <!-- 智慧仓库 -->
     <!-- <AsSmartWarehouse /> -->
     <!-- 智慧园区 -->
@@ -48,9 +48,9 @@ const AsEarth = defineAsyncComponent({
   loader: () => import("@components/AsEarth/index.vue"),
 });
 
-// const AsSmartFactory = defineAsyncComponent({
-//   loader: () => import("@components/AsSmartFactory/index.vue"),
-// });
+const AsSmartFactory = defineAsyncComponent({
+  loader: () => import("@components/AsSmartFactory/index.vue"),
+});
 </script>
 
 <style scoped>
