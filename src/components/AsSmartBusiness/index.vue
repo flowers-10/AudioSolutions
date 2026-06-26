@@ -1,6 +1,9 @@
 <template>
   <canvas class="webgl"></canvas>
-  <button class="lift-button" @click="onSwitchModels">切换场景</button>
+  <div class="controls">
+    <button class="control-button" @click="onSwitchModels">切换场景</button>
+    <button class="control-button" @click="onToggleDayNight">{{ isNight ? '切换白天' : '切换夜间' }}</button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +12,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
@@ -18,6 +22,29 @@ import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 import gsap from "gsap";
 import buildingOtherVertex from "@shaders/buildingOther/vertex.glsl";
 import buildingOtherFragment from "@shaders/buildingOther/fragment.glsl";
+
+const isNight = ref(false);
+let unrealBloomPass: UnrealBloomPass;
+let dayEnvironment: THREE.Texture | null = null;
+let ambientLight: THREE.AmbientLight;
+
+const onToggleDayNight = () => {
+  isNight.value = !isNight.value;
+  
+  if (isNight.value) {
+    // 切换到夜间
+    scene.background = new THREE.Color("#00050a");
+    // 保留环境贴图光照，但降低强度（如果需要可以动态遍历材质修改 envMapIntensity）
+    scene.environment = dayEnvironment; 
+    if (ambientLight) ambientLight.intensity = 0.2; // 调暗环境光
+    unrealBloomPass.enabled = true; // 开启辉光
+  } else {
+    // 切换到白天
+    scene.background = dayEnvironment;
+    scene.environment = dayEnvironment;
+    unrealBloomPass.enabled = false; // 关闭辉光
+  }
+};
 
 const onSwitchModels = () => {
   smartBusiness.children.forEach((item) => {
@@ -36,6 +63,7 @@ const onSwitchModels = () => {
 };
 
 let camera: THREE.PerspectiveCamera;
+let scene: THREE.Scene;
 
 const createGsapAnimation = (
   position: THREE.Vector3,
@@ -59,6 +87,8 @@ dracoLoader.setDecoderPath("static/draco/");
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
+const rgbeLoader = new RGBELoader();
+
 let buildingTransparent: any = null;
 let lift: any = null;
 let buildingMain: any = null;
@@ -77,11 +107,7 @@ gltfLoader.load("static/models/smartBusiness/lift.glb", (gltf) => {
   lift = model;
 });
 
-gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
-  const model = gltf.scene;
-  model.name = "building-main";
-  buildingMain = model;
-});
+
 
 onMounted(async () => {
   /* Debug */
@@ -90,7 +116,27 @@ onMounted(async () => {
   // Canvas
   const canvas = document.querySelector("canvas.webgl");
   // Scene
-  const scene = new THREE.Scene();
+  scene = new THREE.Scene();
+
+  // HDR Environment Map
+  rgbeLoader.load("static/hdr/skyline.hdr", (texture) => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    dayEnvironment = texture;
+    if (!isNight.value) {
+      scene.background = texture;
+      scene.environment = texture;
+    }
+  });
+
+  /* CubeCamera for Reflections */
+  const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
+    type: THREE.HalfFloatType,
+    format: THREE.RGBAFormat,
+    generateMipmaps: true,
+    minFilter: THREE.LinearMipmapLinearFilter,
+  });
+  const cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
+  smartBusiness.add(cubeCamera);
 
   /* Object */
   gltfLoader.load("static/models/smartBusiness/plane.glb", (gltf) => {
@@ -128,9 +174,30 @@ onMounted(async () => {
     smartBusiness.add(model.children[0]);
   });
   gltfLoader.load("static/models/smartBusiness/tree.glb", (gltf) => {
-    const model = gltf.scene;
-    model.name = "tree";
-    smartBusiness.add(model);
+    // 使用 Map 按几何体分组，以支持文件中可能存在的多种物体（如树木和路灯）
+    const groups = new Map<THREE.BufferGeometry, { material: any; matrices: THREE.Matrix4[] }>();
+    
+    gltf.scene.traverse((child: any) => {
+      if (child.isMesh) {
+        if (!groups.has(child.geometry)) {
+          groups.set(child.geometry, { material: child.material, matrices: [] });
+        }
+        child.updateMatrixWorld();
+        groups.get(child.geometry)!.matrices.push(child.matrixWorld);
+      }
+    });
+
+    // 为每一组几何体创建独立的实例化网格
+    groups.forEach((data, geometry) => {
+      const instancedMesh = new THREE.InstancedMesh(geometry, data.material, data.matrices.length);
+      data.matrices.forEach((matrix, i) => {
+        instancedMesh.setMatrixAt(i, matrix);
+      });
+      instancedMesh.instanceMatrix.needsUpdate = true;
+      // 保持名称前缀以方便调试
+      instancedMesh.name = `tree-group-${instancedMesh.id}`;
+      smartBusiness.add(instancedMesh);
+    });
   });
   gltfLoader.load("static/models/smartBusiness/road-old.glb", (gltf) => {
     const model = gltf.scene;
@@ -142,11 +209,36 @@ onMounted(async () => {
     model.name = "road";
     smartBusiness.add(model);
   });
-  // all models
-  setTimeout(() => {
-    smartBusiness.add(buildingMain);
-    createGsapAnimation(camera.position, new THREE.Vector3(-40, 60, 166));
-  }, 2000);
+  // 使用 Promise 等待关键模型加载完成，替代 setTimeout
+  const loadModels = () => {
+    const promises = [
+      new Promise(resolve => gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
+        buildingMain = gltf.scene;
+        buildingMain.name = "building-main";
+        resolve(true);
+      })),
+      // 可以继续添加其他必须先加载的模型
+    ];
+
+    // 关键模型：主建筑加载完后再执行动画
+    gltfLoader.load("static/models/smartBusiness/building-main.glb", (gltf) => {
+      buildingMain = gltf.scene;
+      buildingMain.name = "building-main";
+
+      // Apply CubeCamera reflection to main building
+      buildingMain.traverse((child: any) => {
+        if (child.isMesh && child.material) {
+          child.material.envMap = cubeRenderTarget.texture;
+          child.material.envMapIntensity = 1.5;
+        }
+      });
+
+      smartBusiness.add(buildingMain);
+      createGsapAnimation(camera.position, new THREE.Vector3(-40, 60, 166));
+    });
+  };
+
+  loadModels();
   smartBusiness.position.set(10, -130, -50);
   scene.add(smartBusiness);
   const geometry = new THREE.BufferGeometry(); //声明一个空几何体对象
@@ -198,7 +290,7 @@ onMounted(async () => {
   smartBusiness.add(mesh);
 
   /* Lights */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+  ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   scene.add(ambientLight);
   /* Sizes */
   const sizes = {
@@ -247,13 +339,15 @@ onMounted(async () => {
 
     console.log("Using SMAA");
   }
+
   // bloom
-  const unrealBloomPass = new UnrealBloomPass(
+  unrealBloomPass = new UnrealBloomPass(
     new THREE.Vector2(sizes.width, sizes.height),
-    0.2,
+     0.2,
     0.1,
     0.05
   );
+  unrealBloomPass.enabled = isNight.value;
   effectComposer.addPass(unrealBloomPass);
 
   /* Animate */
@@ -264,6 +358,10 @@ onMounted(async () => {
     material.uniforms.iTime.value = elapsedTime;
 
     buildingOtherUniforms.iTime.value = elapsedTime;
+
+    // Update CubeCamera
+    cubeCamera.update(renderer, scene);
+
     if (
       buildingOtherUniforms.height.value > buildingOtherUniforms.maxHeight.value
     ) {
@@ -295,9 +393,31 @@ onMounted(async () => {
   outline: none;
 }
 
-.lift-button {
+.controls {
   position: absolute;
   top: 10px;
   left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-button {
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.6); /* 使用深色背景确保白天可见 */
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.3s;
+  z-index: 100;
+}
+
+.control-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: #00f2ff;
+  color: #00f2ff;
 }
 </style>
