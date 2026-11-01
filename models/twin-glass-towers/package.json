@@ -1,0 +1,15 @@
+{
+  "name": "twin-glass-towers-assets",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test model.test.mjs"
+  },
+  "dependencies": {
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}

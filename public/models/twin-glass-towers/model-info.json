@@ -1,0 +1,19 @@
+{
+  "generator": "Blender 4.5.15 LTS",
+  "units": "metres (inferred)",
+  "triangles": 38312,
+  "meshObjects": 18,
+  "materials": 16,
+  "glbBytes": 2015224,
+  "sourceTriangles": 4351840,
+  "sourceBytes": 172082328,
+  "towerWidth": 63.0,
+  "towerDepth": 55.0,
+  "towerTop": 126.0,
+  "facadeFloors": 40,
+  "notes": [
+    "Reference silhouette reconstructed from supplied Meshy model; no survey or original design drawings.",
+    "Panel divisions and service louvres are interpreted architectural details.",
+    "No source geometry, baked textures, cameras, lights or environment maps in GLB."
+  ]
+}

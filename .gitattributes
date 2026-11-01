@@ -1,0 +1,3 @@
+# Preserve HDR pixel bytes and keep the reproducible vendor bundle out of diffs.
+public/models/twin-glass-towers/studio.hdr binary
+public/models/twin-glass-towers/viewer.js linguist-generated=true -diff

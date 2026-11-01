@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e3e9ed">
+  <link rel="icon" href="data:,">
+  <title>Twin Glass Towers · 建筑模型</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#dfe7ec;color:#253b47;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}canvas{display:block;width:100vw;height:100dvh;touch-action:none}header{position:absolute;top:30px;left:36px;pointer-events:none}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.24em;color:#617b8a}h1{font-size:24px;font-weight:500;letter-spacing:-.04em;margin:8px 0 4px}header p{margin:0;color:#607583;font-size:12px}.tools{position:absolute;top:32px;right:32px;display:flex;gap:6px}button,a{font:inherit}button{cursor:pointer;border:1px solid #b9c8d1;border-radius:7px;background:#f5f8fac9;padding:9px 13px;color:#2d4858}button[aria-pressed=true]{background:#284e64;color:#fff;border-color:#284e64}button:disabled{opacity:.5;cursor:wait}button:focus-visible,a:focus-visible{outline:3px solid #3a84af;outline-offset:3px}.specs{position:absolute;bottom:30px;left:36px;width:255px;padding:18px 20px;background:#f7fafbd9;border:1px solid #fff9;border-radius:10px;backdrop-filter:blur(15px)}.specs h2{margin:0 0 13px;font-size:11px;letter-spacing:.12em;text-transform:uppercase}dl{margin:0}dl div{display:flex;justify-content:space-between;gap:12px;margin:6px 0;font-size:11px}dt{color:#6e818d}dd{margin:0;font-variant-numeric:tabular-nums}.downloads{display:flex;gap:15px;border-top:1px solid #d4dfe5;margin-top:14px;padding-top:12px}a{color:#2d6585;text-decoration:none;font-size:12px}a:hover{text-decoration:underline}footer{position:absolute;bottom:31px;right:34px;text-align:right;font-size:11px;color:#647b89}footer p{margin:6px 0}.error{color:#9c2c2c;max-width:310px}#status{max-width:340px} @media(max-width:650px){header{left:20px;top:20px}h1{font-size:20px}.tools{top:auto;bottom:24px;right:16px;left:16px;justify-content:center}.specs{bottom:82px;left:16px;width:225px;padding:12px 15px}footer{right:16px;bottom:270px;left:16px;text-align:left;font-size:10px}.specs h2{margin-bottom:8px}header p{font-size:11px}.tools button{padding:9px 14px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+  <canvas aria-label="双塔建筑三维模型，可拖动旋转和缩放"></canvas>
+  <header><div class="eyebrow">ARCHITECTURE / 001</div><h1>Twin Glass Towers</h1><p>双塔幕墙建筑 · Blender 重建</p></header>
+  <nav class="tools" aria-label="模型视图">
+    <button id="rotate" aria-pressed="false" disabled>自动旋转</button>
+    <button id="wireframe" aria-pressed="false" disabled>查看线框</button>
+    <button id="reset" disabled>重置视角</button>
+  </nav>
+  <aside class="specs">
+    <h2>Model details</h2>
+    <dl><div><dt>模型格式</dt><dd>glTF 2.0 / GLB</dd></div><div><dt>三角面</dt><dd id="triangles">38,312</dd></div><div><dt>文件大小</dt><dd id="size">2.02 MB</dd></div><div><dt>包围尺寸</dt><dd id="dimensions">—</dd></div></dl>
+    <div class="downloads"><a href="./twin-glass-towers.glb" download>下载 GLB ↗</a><a href="./twin-glass-towers.threeauto" download>编辑器项目 ↗</a></div>
+  </aside>
+  <footer><p id="status" role="status" aria-live="polite">正在准备三维视图…</p><p>尺寸由参考模型推算</p></footer>
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>
