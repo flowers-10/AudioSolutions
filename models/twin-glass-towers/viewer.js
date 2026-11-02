@@ -7,17 +7,51 @@ import { cameraDistance } from './framing.js';
 const canvas = document.querySelector('canvas');
 const status = document.querySelector('#status');
 const buttons = [...document.querySelectorAll('button')];
-let renderer, controls, environment, pmrem, model;
+let renderer, controls, environment, pmrem, model, sourceHDR;
 let disposed = false;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#dfe7ec');
-scene.fog = new THREE.Fog('#dfe7ec',750,1600);
-// Architecture is ~126 units tall: a 2 m near plane preserves facade depth precision.
+// Keep enough depth precision for the retained source facade surfaces.
 const camera = new THREE.PerspectiveCamera(40,1,2,3000);
-const center = new THREE.Vector3(0,60,0);
-let radius = 125;
+const center = new THREE.Vector3();
+let radius = 1;
 let wireframe = false;
-const geometries = new Set(), materials = new Set();
+const geometries = new WeakSet(), materials = new WeakSet(), textures = new WeakSet(), images = new WeakSet();
+
+function disposeTexture(texture) {
+  if(!texture || textures.has(texture)) return;
+  textures.add(texture);
+  texture.dispose();
+  const source=texture.source?.data;
+  for(const image of (Array.isArray(source)?source:[source])) {
+    if(image?.close && !images.has(image)) {
+      images.add(image);
+      image.close();
+    }
+  }
+}
+
+function disposeObject(root) {
+  root?.traverse(o=>{
+    if(o.geometry && !geometries.has(o.geometry)) {
+      geometries.add(o.geometry);
+      o.geometry.dispose();
+    }
+    for(const material of (Array.isArray(o.material)?o.material:o.material?[o.material]:[])) {
+      if(materials.has(material)) continue;
+      materials.add(material);
+      for(const value of Object.values(material)) if(value?.isTexture) disposeTexture(value);
+      material.dispose();
+    }
+    o.shadow?.dispose();
+  });
+}
+
+function updateCameraLimits() {
+  const distance=cameraDistance(radius,camera.fov,camera.aspect);
+  controls.maxDistance=Math.max(radius*12,distance*2);
+  camera.far=Math.max(3000,controls.maxDistance+radius*2);
+}
 
 function showError(error) {
   status.textContent = `加载失败：${error.message || error}。请通过 HTTP 服务打开本页。`;
@@ -31,13 +65,15 @@ function resize() {
   if(model && controls) {
     const ratio=cameraDistance(radius,camera.fov,camera.aspect)/cameraDistance(radius,camera.fov,previousAspect);
     camera.position.sub(controls.target).multiplyScalar(ratio).add(controls.target);
+    updateCameraLimits();
   }
   camera.updateProjectionMatrix();
   renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
 }
 
 function resetView() {
-  if(!controls) return;
+  if(disposed || !controls || !model) return;
+  updateCameraLimits();
   const direction = new THREE.Vector3(1,.62,1.55).normalize();
   camera.position.copy(center).addScaledVector(direction,cameraDistance(radius,camera.fov,camera.aspect));
   controls.target.copy(center);
@@ -52,24 +88,28 @@ function dispose() {
   observer.disconnect();
   renderer?.setAnimationLoop(null);
   controls?.dispose();
+  disposeTexture(sourceHDR);
   environment?.dispose();
   pmrem?.dispose();
-  scene.traverse(o=>{
-    if(o.geometry) geometries.add(o.geometry);
-    if(o.material) for(const m of (Array.isArray(o.material)?o.material:[o.material])) materials.add(m);
-  });
-  geometries.forEach(g=>g.dispose());
-  materials.forEach(m=>m.dispose());
+  disposeObject(scene);
+  // A loader may have completed before its sibling failed, before scene.add().
+  disposeObject(model);
+  scene.clear();
+  scene.environment=null;
+  model=sourceHDR=environment=pmrem=undefined;
+  buttons.forEach(b=>b.disabled=true);
   renderer?.dispose();
 }
 const observer = new ResizeObserver(resize);
 window.addEventListener('pagehide',event=>{ if(!event.persisted) dispose(); });
 document.querySelector('#reset').addEventListener('click',resetView);
 document.querySelector('#rotate').addEventListener('click',event=>{
+  if(disposed || !model) return;
   controls.autoRotate=!controls.autoRotate;
   event.currentTarget.setAttribute('aria-pressed',String(controls.autoRotate));
 });
 document.querySelector('#wireframe').addEventListener('click',event=>{
+  if(disposed || !model) return;
   wireframe=!wireframe;
   model.traverse(o=>{
     if(o.isMesh) for(const m of (Array.isArray(o.material)?o.material:[o.material])) m.wireframe=wireframe;
@@ -81,20 +121,19 @@ try {
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.15;
+  renderer.toneMappingExposure=1;
   renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   controls=new OrbitControls(camera,canvas);
   controls.enableDamping=true;
   controls.dampingFactor=.065;
-  controls.minDistance=35;
-  controls.maxDistance=1400;
   controls.maxPolarAngle=Math.PI*.49;
   controls.autoRotateSpeed=.55;
   observer.observe(canvas);
   resize();
-  scene.add(new THREE.HemisphereLight('#d9ebff','#8b9397',2));
-  const sun=new THREE.DirectionalLight('#fff5e7',3.2);
+  // Neutral illumination keeps the original base colour, roughness and normal maps visible.
+  scene.add(new THREE.HemisphereLight('#ffffff','#808080',.6));
+  const sun=new THREE.DirectionalLight('#ffffff',1.5);
   sun.position.set(-100,210,140);
   sun.castShadow=true;
   Object.assign(sun.shadow.camera,{left:-180,right:180,top:180,bottom:-180,near:1,far:700});
@@ -109,28 +148,40 @@ try {
   scene.add(floor);
   const [gltf,hdr]=await Promise.all([
     new GLTFLoader().loadAsync('./twin-glass-towers.glb',e=>{
+      if(disposed) return;
       status.textContent=e.total?`正在加载模型 ${Math.round(e.loaded/e.total*100)}%`:'正在加载模型…';
+    }).then(gltf=>{
+      if(disposed) {disposeObject(gltf.scene);return null;}
+      model=gltf.scene;
+      return gltf;
     }),
-    new HDRLoader().loadAsync('./studio.hdr'),
+    new HDRLoader().loadAsync('./studio.hdr').then(hdr=>{
+      if(disposed) {disposeTexture(hdr);return null;}
+      sourceHDR=hdr;
+      return hdr;
+    }),
   ]);
-  if(disposed) {
-    hdr.dispose();
-    gltf.scene.traverse(o=>{o.geometry?.dispose();for(const m of (Array.isArray(o.material)?o.material:o.material?[o.material]:[]))m.dispose();});
-  } else {
+  if(!disposed) {
     pmrem=new THREE.PMREMGenerator(renderer);
     environment=pmrem.fromEquirectangular(hdr);
-    hdr.dispose();
+    disposeTexture(hdr);
+    sourceHDR=undefined;
+    pmrem.dispose();
+    pmrem=undefined;
     scene.environment=environment.texture;
-    scene.environmentIntensity=1.3;
+    scene.environmentIntensity=1;
     model=gltf.scene;
-    // Thin curtain-wall fins cast onto the ground; avoid subpixel self-shadow acne.
+    // Preserve imported materials, maps and normals; avoid source surface self-shadow acne.
     model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=false;}});
     scene.add(model);
     const bounds=new THREE.Box3().setFromObject(model);
     const sphere=bounds.getBoundingSphere(new THREE.Sphere());
     center.copy(sphere.center); radius=sphere.radius;
+    controls.minDistance=Math.max(camera.near*3,radius*.2);
+    floor.position.y=bounds.min.y-.04;
     resetView();
-    document.querySelector('#dimensions').textContent=`${bounds.getSize(new THREE.Vector3()).x.toFixed(1)} × 126.1 × ${bounds.getSize(new THREE.Vector3()).z.toFixed(1)} m`;
+    const size=bounds.getSize(new THREE.Vector3());
+    document.querySelector('#dimensions').textContent=`${size.x.toFixed(1)} × ${size.y.toFixed(1)} × ${size.z.toFixed(1)} m`;
     buttons.forEach(b=>b.disabled=false);
     status.textContent='拖动旋转 · 滚轮缩放 · 右键平移';
     document.body.dataset.loaded='true';

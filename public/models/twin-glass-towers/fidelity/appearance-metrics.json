@@ -1,0 +1,80 @@
+{
+  "method": "Raw 8-bit sRGB PNG RGB errors on union of opaque geometry masks. SSIM: luminance, nonoverlapping 8x8 blocks >90% inside overlapping masks, population variance, C1=.01^2 C2=.03^2.",
+  "limitations": "Measures this lighting and these cameras only; visibility, geometry, normals and textures all contribute. Not a universal perceptual fidelity score. Inspect crops alongside metrics.",
+  "views": {
+    "front-oblique": {
+      "mean_absolute_srgb_error_0_255": 5.981727123260498,
+      "rmse_srgb_0_255": 10.401138305664062,
+      "psnr_db": 27.789186182672452,
+      "p95_per_pixel_max_channel_error_0_255": 25.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.10859280427447227,
+      "windowed_luminance_ssim_8x8": 0.9054501218196545
+    },
+    "back-oblique": {
+      "mean_absolute_srgb_error_0_255": 3.6733994483947754,
+      "rmse_srgb_0_255": 5.916374683380127,
+      "psnr_db": 32.68969020829516,
+      "p95_per_pixel_max_channel_error_0_255": 16.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.044864674718316615,
+      "windowed_luminance_ssim_8x8": 0.95683270082214
+    },
+    "top": {
+      "mean_absolute_srgb_error_0_255": 5.7911224365234375,
+      "rmse_srgb_0_255": 12.011000633239746,
+      "psnr_db": 26.539219811342058,
+      "p95_per_pixel_max_channel_error_0_255": 33.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.11328554395035824,
+      "windowed_luminance_ssim_8x8": 0.9049878153982415
+    },
+    "front": {
+      "mean_absolute_srgb_error_0_255": 2.9308810234069824,
+      "rmse_srgb_0_255": 4.886106014251709,
+      "psnr_db": 34.35154589541075,
+      "p95_per_pixel_max_channel_error_0_255": 12.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.01965373852551194,
+      "windowed_luminance_ssim_8x8": 0.9675823792987701
+    },
+    "back": {
+      "mean_absolute_srgb_error_0_255": 4.998135566711426,
+      "rmse_srgb_0_255": 8.388245582580566,
+      "psnr_db": 29.657380872387833,
+      "p95_per_pixel_max_channel_error_0_255": 21.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.07965186982666346,
+      "windowed_luminance_ssim_8x8": 0.9355328499102832
+    },
+    "left": {
+      "mean_absolute_srgb_error_0_255": 9.758508682250977,
+      "rmse_srgb_0_255": 16.949668884277344,
+      "psnr_db": 23.547579237113382,
+      "p95_per_pixel_max_channel_error_0_255": 48.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.22281239611420972,
+      "windowed_luminance_ssim_8x8": 0.877891161876094
+    },
+    "right": {
+      "mean_absolute_srgb_error_0_255": 3.2543296813964844,
+      "rmse_srgb_0_255": 6.183403491973877,
+      "psnr_db": 32.306251870937565,
+      "p95_per_pixel_max_channel_error_0_255": 15.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.038601804996367846,
+      "windowed_luminance_ssim_8x8": 0.9492053750355588
+    },
+    "left-oblique": {
+      "mean_absolute_srgb_error_0_255": 3.512397050857544,
+      "rmse_srgb_0_255": 5.684413433074951,
+      "psnr_db": 33.03709046715441,
+      "p95_per_pixel_max_channel_error_0_255": 15.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.043287112858026715,
+      "windowed_luminance_ssim_8x8": 0.9655895427990009
+    },
+    "right-oblique": {
+      "mean_absolute_srgb_error_0_255": 4.6157097816467285,
+      "rmse_srgb_0_255": 8.215493202209473,
+      "psnr_db": 29.838130796000026,
+      "p95_per_pixel_max_channel_error_0_255": 22.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.08744060029422036,
+      "windowed_luminance_ssim_8x8": 0.9366732778804681
+    }
+  },
+  "mean_mae_0_255": 4.94624564382765,
+  "mean_ssim": 0.9333050249822458
+}

@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "generator": "Blender 4.5.15 LTS",
+  "units": "metres (inferred)",
+  "triangles": 1305552,
+  "meshObjects": 8,
+  "materials": 1,
+  "sourceTriangles": 4351840,
+  "sourceBytes": 172082328,
+  "sourceName": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+  "sourceSHA256": "ed5fbf58491a0065b037d49d11c2a7bd26efe6e0149dd669496ea3bb655536aa",
+  "reconstruction": {
+    "method": "source-constrained-retopology",
+    "collapseRatio": 0.3,
+    "verticesClampedToSourceBounds": 13,
+    "preserved": [
+      "source silhouette and architectural relief",
+      "original UV coordinates through interpolation",
+      "original 2048px base color image",
+      "original 2048px metallic/roughness image",
+      "original 2048px tangent normal image"
+    ],
+    "editableZones": [
+      "East crown",
+      "Front stepped podium",
+      "West podium wing",
+      "West facade and core",
+      "West crown",
+      "Central connecting podium",
+      "East facade and core",
+      "East podium wing"
+    ]
+  },
+  "notes": [
+    "Retopology of the supplied mesh; not a newly invented parametric building.",
+    "No speculative windows, roof seams, service grilles or podium tiers.",
+    "Small geometric/shading changes are measured in the accompanying fidelity report."
+  ]
+}

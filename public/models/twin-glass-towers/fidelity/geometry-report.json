@@ -1,0 +1,1904 @@
+{
+  "schema": "sampled-bidirectional-triangle-distance-v1",
+  "blender": "4.5.15 LTS",
+  "units": "inferred metres after documented normalization",
+  "method": {
+    "surface_sampling": "Uniform triangle area with sqrt-barycentric sampling; global object allocation weighted by area",
+    "nearest": "Unsigned point-to-triangle distance: mathutils BVHTree.FromObject (epsilon 0) neighborhood search, then float64 plane/segment closest-point refinement against original triangle vertices",
+    "refinement_search_guard": 0.2509569145440038,
+    "boundary_sampling": "Topological edges incident to one original polygon, sampled uniformly by total edge length; split UV/normal seams can be included",
+    "key_extremities": "Per mesh: support vertices for 26 directions plus min/max coordinate vertices in each cell of 8x8 XY/YZ/XZ grids; duplicate positions removed",
+    "normalization": "Independently for each asset: if raw world Z height < 3, uniform scale 100 then translate Z +63.785398; otherwise identity",
+    "percentile": "NumPy linear percentile; surface statistics do not include deliberately biased boundary/extremity probes",
+    "candidate_reuses_source_bvh": false
+  },
+  "source_diagonal": 250.95691454400384,
+  "source": {
+    "path": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+    "bytes": 172082328,
+    "scale": 100.0,
+    "offset": [
+      0.0,
+      0.0,
+      63.785398
+    ],
+    "raw_bounds": [
+      [
+        -0.9505919814109802,
+        -0.5196040272712708,
+        -0.6378539800643921
+      ],
+      [
+        0.9496139883995056,
+        0.5225849747657776,
+        0.6274510025978088
+      ]
+    ],
+    "bounds": [
+      [
+        -95.05919647216797,
+        -51.96040344238281,
+        0.0
+      ],
+      [
+        94.96139526367188,
+        52.25849914550781,
+        126.53050231933594
+      ]
+    ],
+    "mesh_count": 1,
+    "seed": 20261102,
+    "vertices": 3509250,
+    "triangles": 4351840,
+    "surface_area": 280689.2533575199,
+    "boundary_length": 836770.0372802936,
+    "boundary_edges": 2365766,
+    "sample_counts": {
+      "surface": 20000,
+      "boundary": 2048,
+      "key_extremities": 378
+    },
+    "objects": [
+      {
+        "name": "Mesh_0",
+        "vertices": 3509250,
+        "polygons": 4351840,
+        "triangles": 4351840,
+        "zero_area_triangles": 0,
+        "surface_area": 280689.2533575199,
+        "bounds": [
+          [
+            -95.05919647216797,
+            -51.96040344238281,
+            0.0
+          ],
+          [
+            94.96139526367188,
+            52.25849914550781,
+            126.53050231933594
+          ]
+        ],
+        "boundary_edges": 2365766,
+        "boundary_length": 836770.0372802936,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 378,
+        "surface_sample_count": 20000,
+        "boundary_sample_count": 2048
+      }
+    ],
+    "sha256": "ed5fbf58491a0065b037d49d11c2a7bd26efe6e0149dd669496ea3bb655536aa"
+  },
+  "candidate": {
+    "path": "twin-glass-towers.glb",
+    "bytes": 59903696,
+    "scale": 1.0,
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "raw_bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "mesh_count": 8,
+    "seed": 20261103,
+    "vertices": 1545015,
+    "triangles": 1305552,
+    "surface_area": 282264.4010345544,
+    "boundary_length": 819863.6933429956,
+    "boundary_edges": 1500244,
+    "sample_counts": {
+      "surface": 20000,
+      "boundary": 2048,
+      "key_extremities": 2104
+    },
+    "objects": [
+      {
+        "name": "Central connecting podium",
+        "vertices": 1412,
+        "polygons": 1121,
+        "triangles": 1121,
+        "zero_area_triangles": 0,
+        "surface_area": 6060.749280812987,
+        "bounds": [
+          [
+            -20.61846923828125,
+            -44.1506233215332,
+            12.922870635986328
+          ],
+          [
+            20.862817764282227,
+            41.61583709716797,
+            23.010482788085938
+          ]
+        ],
+        "boundary_edges": 1389,
+        "boundary_length": 3214.401130242247,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 129,
+        "surface_sample_count": 452,
+        "boundary_sample_count": 7
+      },
+      {
+        "name": "East crown",
+        "vertices": 40923,
+        "polygons": 34869,
+        "triangles": 34869,
+        "zero_area_triangles": 0,
+        "surface_area": 12245.92761241488,
+        "bounds": [
+          [
+            12.90349006652832,
+            -13.389057159423828,
+            116.61739349365234
+          ],
+          [
+            76.02719116210938,
+            41.58394241333008,
+            126.5310287475586
+          ]
+        ],
+        "boundary_edges": 39933,
+        "boundary_length": 24734.131090014467,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 304,
+        "surface_sample_count": 882,
+        "boundary_sample_count": 54
+      },
+      {
+        "name": "East facade and core",
+        "vertices": 611349,
+        "polygons": 517929,
+        "triangles": 517929,
+        "zero_area_triangles": 4,
+        "surface_area": 86510.8602643982,
+        "bounds": [
+          [
+            -14.195916175842285,
+            -43.34454345703125,
+            20.389270782470703
+          ],
+          [
+            76.92315673828125,
+            42.2276496887207,
+            117.60614013671875
+          ]
+        ],
+        "boundary_edges": 593325,
+        "boundary_length": 311837.43543639476,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 272,
+        "surface_sample_count": 6152,
+        "boundary_sample_count": 771
+      },
+      {
+        "name": "East podium wing",
+        "vertices": 81774,
+        "polygons": 68014,
+        "triangles": 68014,
+        "zero_area_triangles": 0,
+        "surface_area": 18452.02433253413,
+        "bounds": [
+          [
+            -0.3069625794887543,
+            -44.1506233215332,
+            -0.00052642822265625
+          ],
+          [
+            79.5733642578125,
+            52.254371643066406,
+            25.49251937866211
+          ]
+        ],
+        "boundary_edges": 79578,
+        "boundary_length": 43761.381883673486,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 268,
+        "surface_sample_count": 1268,
+        "boundary_sample_count": 99
+      },
+      {
+        "name": "Front stepped podium",
+        "vertices": 85723,
+        "polygons": 72606,
+        "triangles": 72606,
+        "zero_area_triangles": 3,
+        "surface_area": 42868.677413219884,
+        "bounds": [
+          [
+            -95.0592041015625,
+            -51.95917510986328,
+            -0.00052642822265625
+          ],
+          [
+            94.96139526367188,
+            2.210644245147705,
+            23.38162612915039
+          ]
+        ],
+        "boundary_edges": 82724,
+        "boundary_length": 54996.95634139526,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 319,
+        "surface_sample_count": 3027,
+        "boundary_sample_count": 132
+      },
+      {
+        "name": "West crown",
+        "vertices": 39227,
+        "polygons": 33056,
+        "triangles": 33056,
+        "zero_area_triangles": 0,
+        "surface_area": 12177.525057189707,
+        "bounds": [
+          [
+            -76.16268920898438,
+            -13.39195728302002,
+            116.61448669433594
+          ],
+          [
+            -12.986794471740723,
+            41.57234191894531,
+            126.52812957763672
+          ]
+        ],
+        "boundary_edges": 38412,
+        "boundary_length": 25355.844510041046,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 307,
+        "surface_sample_count": 814,
+        "boundary_sample_count": 71
+      },
+      {
+        "name": "West facade and core",
+        "vertices": 607909,
+        "polygons": 513754,
+        "triangles": 513754,
+        "zero_area_triangles": 3,
+        "surface_area": 86406.55579562277,
+        "bounds": [
+          [
+            -77.0992431640625,
+            -43.350341796875,
+            15.01926040649414
+          ],
+          [
+            14.086517333984375,
+            42.21894836425781,
+            117.58004760742188
+          ]
+        ],
+        "boundary_edges": 590322,
+        "boundary_length": 312214.3972014542,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 272,
+        "surface_sample_count": 6136,
+        "boundary_sample_count": 802
+      },
+      {
+        "name": "West podium wing",
+        "vertices": 76698,
+        "polygons": 64203,
+        "triangles": 64203,
+        "zero_area_triangles": 1,
+        "surface_area": 17542.081278361853,
+        "bounds": [
+          [
+            -79.30001831054688,
+            -16.561189651489258,
+            -0.00052642822265625
+          ],
+          [
+            -0.9709647297859192,
+            52.25727081298828,
+            30.236217498779297
+          ]
+        ],
+        "boundary_edges": 74561,
+        "boundary_length": 43749.14574978009,
+        "nonmanifold_edges_more_than_two_faces": 0,
+        "loose_edges_excluded": 0,
+        "key_extremity_probes": 283,
+        "surface_sample_count": 1269,
+        "boundary_sample_count": 112
+      }
+    ],
+    "sha256": "53c4445e70451b80b4d1743435d7119376e1f91e4a334a43814bffd551e04bed"
+  },
+  "bounds_difference": {
+    "convention": "candidate minus source; axis order X,Y,Z",
+    "min_delta": [
+      -7.62939453125e-06,
+      0.00122833251953125,
+      -0.00052642822265625
+    ],
+    "max_delta": [
+      0.0,
+      -0.00122833251953125,
+      0.00052642822265625
+    ],
+    "size_source": [
+      190.02059173583984,
+      104.21890258789062,
+      126.53050231933594
+    ],
+    "size_candidate": [
+      190.02059936523438,
+      104.21644592285156,
+      126.53155517578125
+    ],
+    "size_delta": [
+      7.62939453125e-06,
+      -0.0024566650390625,
+      0.0010528564453125
+    ],
+    "center_delta": [
+      -3.814697265625e-06,
+      0.0,
+      0.0
+    ],
+    "max_absolute_bound_delta": 0.00122833251953125
+  },
+  "distances": {
+    "source_to_candidate_surface": {
+      "count": 20000,
+      "median": 0.007924518238717135,
+      "p95": 0.03294993996895082,
+      "p99": 0.049975032992797576,
+      "max": 0.10304577092861959,
+      "mean": 0.011233743136703835,
+      "rms": 0.015633321073505808,
+      "percent_of_source_diagonal": {
+        "median": 0.0031577206203368497,
+        "p95": 0.013129719907826345,
+        "p99": 0.01991379001594903,
+        "max": 0.041061140361825385
+      },
+      "raw_bvh_float_distance": {
+        "count": 20000,
+        "median": 0.0079277865588665,
+        "p95": 0.03294941671192646,
+        "p99": 0.04997427716851233,
+        "max": 0.10304643213748932,
+        "mean": 0.011236494254324372,
+        "rms": 0.015634366196259474,
+        "percent_of_source_diagonal": {
+          "median": 0.0031590229634722456,
+          "p95": 0.013129511403101415,
+          "p99": 0.0199134888390372,
+          "max": 0.041061403836880825
+        }
+      },
+      "double_refined_queries": 20000,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.10304577092861959,
+          "sample_index": 10473,
+          "query_point": [
+            32.84557521204184,
+            -44.024703405372136,
+            20.932012776221896
+          ],
+          "nearest_target_point": [
+            32.84361662417122,
+            -44.02225418235645,
+            21.035010815749093
+          ],
+          "nearest_target_object": "Front stepped podium"
+        },
+        {
+          "distance": 0.10095747373347491,
+          "sample_index": 18206,
+          "query_point": [
+            79.37026590056652,
+            41.689607215454856,
+            6.506735163482279
+          ],
+          "nearest_target_point": [
+            79.36438227830111,
+            41.689570163282205,
+            6.607521041058553
+          ],
+          "nearest_target_object": "East podium wing"
+        },
+        {
+          "distance": 0.0940808664950408,
+          "sample_index": 2740,
+          "query_point": [
+            -24.805042861790373,
+            -36.79942587126805,
+            1.0137775469027623
+          ],
+          "nearest_target_point": [
+            -24.71096986468222,
+            -36.79951851378518,
+            1.0149908370210488
+          ],
+          "nearest_target_object": "Front stepped podium"
+        },
+        {
+          "distance": 0.09370739672748057,
+          "sample_index": 11054,
+          "query_point": [
+            32.828236625124816,
+            52.23602177435659,
+            6.72400305390927
+          ],
+          "nearest_target_point": [
+            32.827826701491034,
+            52.14241552243792,
+            6.728336385860015
+          ],
+          "nearest_target_object": "East podium wing"
+        },
+        {
+          "distance": 0.08805214094424704,
+          "sample_index": 13486,
+          "query_point": [
+            -29.96550705084738,
+            -12.775350498808885,
+            14.271127929168316
+          ],
+          "nearest_target_point": [
+            -29.970277240478037,
+            -12.822107071772992,
+            14.196668223955326
+          ],
+          "nearest_target_object": "West podium wing"
+        },
+        {
+          "distance": 0.08510208303959187,
+          "sample_index": 18371,
+          "query_point": [
+            -13.67276186680431,
+            13.499216938281645,
+            60.02419828333632
+          ],
+          "nearest_target_point": [
+            -13.689354442758983,
+            13.4992139317129,
+            60.10766714550555
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.08108252076007522,
+          "sample_index": 1601,
+          "query_point": [
+            -56.17445438827937,
+            41.486221222959266,
+            114.44018144163806
+          ],
+          "nearest_target_point": [
+            -56.17660037612142,
+            41.40617194141947,
+            114.45290474443068
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.07936400714279211,
+          "sample_index": 8860,
+          "query_point": [
+            69.82088028469633,
+            -13.337805628542988,
+            60.18492518719873
+          ],
+          "nearest_target_point": [
+            69.82152657994756,
+            -13.258803409963868,
+            60.19246689733545
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.07915930070410825,
+          "sample_index": 19022,
+          "query_point": [
+            -85.09366202676307,
+            -18.934394543983366,
+            0.34841560677799943
+          ],
+          "nearest_target_point": [
+            -85.09413947015783,
+            -18.85524489598314,
+            0.3495558511415835
+          ],
+          "nearest_target_object": "Front stepped podium"
+        },
+        {
+          "distance": 0.0759528528579836,
+          "sample_index": 7878,
+          "query_point": [
+            24.551565696079987,
+            -12.942796139324242,
+            55.85650414675733
+          ],
+          "nearest_target_point": [
+            24.55263385315069,
+            -13.012887590664992,
+            55.827265758520525
+          ],
+          "nearest_target_object": "East facade and core"
+        }
+      ]
+    },
+    "source_to_candidate_boundary": {
+      "count": 2048,
+      "median": 0.002652200100742021,
+      "p95": 0.016570183128640573,
+      "p99": 0.027907695007778933,
+      "max": 0.05237607772735513,
+      "mean": 0.004830703480493608,
+      "rms": 0.007731653675764095,
+      "percent_of_source_diagonal": {
+        "median": 0.0010568348377892466,
+        "p95": 0.006602799990089569,
+        "p99": 0.011120512482586123,
+        "max": 0.02087054577576554
+      },
+      "raw_bvh_float_distance": {
+        "count": 2048,
+        "median": 0.0026656927075237036,
+        "p95": 0.01657061260193585,
+        "p99": 0.02790870852768421,
+        "max": 0.05236939713358879,
+        "mean": 0.004841229677070569,
+        "rms": 0.00773750036395075,
+        "percent_of_source_diagonal": {
+          "median": 0.0010622113012376433,
+          "p95": 0.006602971124364174,
+          "p99": 0.011120916344702103,
+          "max": 0.020867883727669165
+        }
+      },
+      "double_refined_queries": 2048,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.05237607772735513,
+          "sample_index": 549,
+          "query_point": [
+            -76.0453352296807,
+            17.557588731692377,
+            76.41140141963417
+          ],
+          "nearest_target_point": [
+            -76.00318604479914,
+            17.558110202538355,
+            76.38031399773917
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.04726595602197512,
+          "sample_index": 1941,
+          "query_point": [
+            -5.456784014828137,
+            -43.91682908151394,
+            21.21952006027272
+          ],
+          "nearest_target_point": [
+            -5.457683862593184,
+            -43.88195024574352,
+            21.187633892613828
+          ],
+          "nearest_target_object": "Front stepped podium"
+        },
+        {
+          "distance": 0.042818727631598545,
+          "sample_index": 1573,
+          "query_point": [
+            50.03410319312266,
+            -13.247904116922692,
+            53.37684726515196
+          ],
+          "nearest_target_point": [
+            50.03372333237581,
+            -13.217247800293286,
+            53.34695597223045
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.04263668867249319,
+          "sample_index": 1217,
+          "query_point": [
+            -14.040653568301883,
+            9.277264142888951,
+            63.40718560539027
+          ],
+          "nearest_target_point": [
+            -14.009270063014228,
+            9.253146768774553,
+            63.391332685071255
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.04219608528326326,
+          "sample_index": 987,
+          "query_point": [
+            28.068595988497755,
+            -13.041974278550837,
+            55.6460447075309
+          ],
+          "nearest_target_point": [
+            28.04154669817227,
+            -13.07423597427519,
+            55.64887816744931
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.04159022086210837,
+          "sample_index": 124,
+          "query_point": [
+            -13.313129764213688,
+            7.545728510379925,
+            67.7659426893945
+          ],
+          "nearest_target_point": [
+            -13.315879921719166,
+            7.546081612056736,
+            67.72444499760014
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.040002521724122636,
+          "sample_index": 659,
+          "query_point": [
+            70.22142561254174,
+            -12.632447968069489,
+            122.69201329250647
+          ],
+          "nearest_target_point": [
+            70.22121570917426,
+            -12.63681495663265,
+            122.73177617841475
+          ],
+          "nearest_target_object": "East crown"
+        },
+        {
+          "distance": 0.03905863402832104,
+          "sample_index": 247,
+          "query_point": [
+            -55.676990337850256,
+            -13.276672970230878,
+            29.52932769396774
+          ],
+          "nearest_target_point": [
+            -55.6771166636646,
+            -13.270210630938433,
+            29.56784780695844
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.038386044830960454,
+          "sample_index": 128,
+          "query_point": [
+            48.075108477811696,
+            41.438907180742746,
+            43.205440275885245
+          ],
+          "nearest_target_point": [
+            48.07564384566104,
+            41.431998502053304,
+            43.24319569904267
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.03609435732157736,
+          "sample_index": 773,
+          "query_point": [
+            14.344179367760555,
+            25.774003491095034,
+            47.91976687079058
+          ],
+          "nearest_target_point": [
+            14.373325022994083,
+            25.756805499600326,
+            47.93231926100177
+          ],
+          "nearest_target_object": "East facade and core"
+        }
+      ]
+    },
+    "source_to_candidate_key_extremities": {
+      "count": 378,
+      "median": 0.013020360209772139,
+      "p95": 0.043049741336536385,
+      "p99": 0.054122745751671905,
+      "max": 0.07880771297638613,
+      "mean": 0.016537573882538036,
+      "rms": 0.021563903942517785,
+      "percent_of_source_diagonal": {
+        "median": 0.005188285102018616,
+        "p95": 0.017154235983000924,
+        "p99": 0.02156654892335385,
+        "max": 0.03140288567843691
+      },
+      "raw_bvh_float_distance": {
+        "count": 378,
+        "median": 0.013020121492445469,
+        "p95": 0.043045569024980065,
+        "p99": 0.054121322706341755,
+        "max": 0.0788097158074379,
+        "mean": 0.016555209540324082,
+        "rms": 0.02156784029237614,
+        "percent_of_source_diagonal": {
+          "median": 0.005188189979185636,
+          "p95": 0.01715257342209325,
+          "p99": 0.02156598187568643,
+          "max": 0.031403683756089165
+        }
+      },
+      "double_refined_queries": 378,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.07880771297638613,
+          "sample_index": 330,
+          "query_point": [
+            76.01420593261719,
+            22.483200073242188,
+            22.82449722290039
+          ],
+          "nearest_target_point": [
+            75.93541918241114,
+            22.483519969986567,
+            22.82270801005364
+          ],
+          "nearest_target_object": "East podium wing"
+        },
+        {
+          "distance": 0.0728007019308809,
+          "sample_index": 246,
+          "query_point": [
+            38.38129806518555,
+            52.24980163574219,
+            6.5951995849609375
+          ],
+          "nearest_target_point": [
+            38.38286860145335,
+            52.17701973544917,
+            6.594679385770308
+          ],
+          "nearest_target_object": "East podium wing"
+        },
+        {
+          "distance": 0.05539686325582438,
+          "sample_index": 55,
+          "query_point": [
+            -76.1104965209961,
+            23.916900634765625,
+            107.21709442138672
+          ],
+          "nearest_target_point": [
+            -76.05513702953539,
+            23.916949138976644,
+            107.21912833661062
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.054710377247690706,
+          "sample_index": 351,
+          "query_point": [
+            76.88980102539062,
+            41.397499084472656,
+            30.992897033691406
+          ],
+          "nearest_target_point": [
+            76.83630322474097,
+            41.40596353936975,
+            31.000614786442682
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.053947219460653284,
+          "sample_index": 53,
+          "query_point": [
+            -76.11250305175781,
+            -12.715700149536133,
+            98.34799194335938
+          ],
+          "nearest_target_point": [
+            -76.05885169377467,
+            -12.715098458859096,
+            98.34238193066511
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.05175060776659389,
+          "sample_index": 232,
+          "query_point": [
+            28.227901458740234,
+            -13.917000770568848,
+            96.25199890136719
+          ],
+          "nearest_target_point": [
+            28.2285798550732,
+            -13.865254739926405,
+            96.25188273175571
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.04802128160974451,
+          "sample_index": 337,
+          "query_point": [
+            76.0376968383789,
+            -8.02280044555664,
+            43.32539367675781
+          ],
+          "nearest_target_point": [
+            75.98968671713199,
+            -8.022717979908554,
+            43.32642563834407
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.04680020911756133,
+          "sample_index": 138,
+          "query_point": [
+            -28.80820083618164,
+            42.138999938964844,
+            84.31309509277344
+          ],
+          "nearest_target_point": [
+            -28.8081208086522,
+            42.0922001355607,
+            84.31291741222945
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 0.04573553463928545,
+          "sample_index": 303,
+          "query_point": [
+            75.87220001220703,
+            -13.338300704956055,
+            112.80569458007812
+          ],
+          "nearest_target_point": [
+            75.87214888454102,
+            -13.292639084260333,
+            112.80309594386982
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 0.0455396315556982,
+          "sample_index": 197,
+          "query_point": [
+            15.942400932312012,
+            42.19380187988281,
+            68.80549621582031
+          ],
+          "nearest_target_point": [
+            15.943251728732273,
+            42.14827169995902,
+            68.80512621070288
+          ],
+          "nearest_target_object": "East facade and core"
+        }
+      ]
+    },
+    "candidate_to_source_surface": {
+      "count": 20000,
+      "median": 0.00812329094993889,
+      "p95": 0.0344891202107611,
+      "p99": 0.050903652646723384,
+      "max": 0.10681557508536094,
+      "mean": 0.011621538425240828,
+      "rms": 0.01621497663956596,
+      "percent_of_source_diagonal": {
+        "median": 0.0032369265316714428,
+        "p95": 0.013743044408012769,
+        "p99": 0.0202838215233945,
+        "max": 0.04256331222411146
+      },
+      "raw_bvh_float_distance": {
+        "count": 20000,
+        "median": 0.008124518673866987,
+        "p95": 0.034489193744957444,
+        "p99": 0.0509025743231177,
+        "max": 0.10681494325399399,
+        "mean": 0.011621539236772503,
+        "rms": 0.016214959602501598,
+        "percent_of_source_diagonal": {
+          "median": 0.0032374157486871717,
+          "p95": 0.013743073709535094,
+          "p99": 0.02028339183863859,
+          "max": 0.042563060455249824
+        }
+      },
+      "double_refined_queries": 20000,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.10681557508536094,
+          "sample_index": 10853,
+          "query_point": [
+            -24.70241307061957,
+            -40.38675275747753,
+            8.334361560480081
+          ],
+          "nearest_target_point": [
+            -24.80920235064423,
+            -40.386806511658676,
+            8.336730919701276
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08749625266316075,
+          "sample_index": 15996,
+          "query_point": [
+            -14.810163581543806,
+            11.351747187832295,
+            61.361510496769355
+          ],
+          "nearest_target_point": [
+            -14.89750661837539,
+            11.351253246608845,
+            61.35635839339306
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08507715118498892,
+          "sample_index": 18906,
+          "query_point": [
+            -76.74318403474554,
+            32.53905299734268,
+            22.750754468985413
+          ],
+          "nearest_target_point": [
+            -76.6740951538086,
+            32.54199981689453,
+            22.701194763183594
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08398321658830853,
+          "sample_index": 18319,
+          "query_point": [
+            -71.70235119570431,
+            -13.215616566734067,
+            51.80658866871995
+          ],
+          "nearest_target_point": [
+            -71.70233630964594,
+            -13.298881300742385,
+            51.79562671098203
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08262866469189357,
+          "sample_index": 459,
+          "query_point": [
+            49.99074873789805,
+            41.36056862585149,
+            123.92702772015664
+          ],
+          "nearest_target_point": [
+            49.99033699724751,
+            41.44319372576811,
+            123.92767545634582
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08217660047454169,
+          "sample_index": 15275,
+          "query_point": [
+            -13.597789485754681,
+            12.405538149431175,
+            97.90648684676054
+          ],
+          "nearest_target_point": [
+            -13.597190420581926,
+            12.40580134667204,
+            97.82431285139897
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.07989317955326777,
+          "sample_index": 18823,
+          "query_point": [
+            -47.026259698111716,
+            -13.258253968186217,
+            16.57111297087357
+          ],
+          "nearest_target_point": [
+            -47.0258752942881,
+            -13.337986506114145,
+            16.57616220531085
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.07844529003228587,
+          "sample_index": 17936,
+          "query_point": [
+            -37.97044270751897,
+            41.456395640924356,
+            73.51768404820784
+          ],
+          "nearest_target_point": [
+            -37.97169091492595,
+            41.53438618037568,
+            73.50934250982391
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.07740061154561423,
+          "sample_index": 3483,
+          "query_point": [
+            25.07367377628706,
+            41.40886541033416,
+            67.66370617636748
+          ],
+          "nearest_target_point": [
+            25.07351770445092,
+            41.48625697228385,
+            67.66253295507357
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.07658021804794263,
+          "sample_index": 6796,
+          "query_point": [
+            24.13751228954666,
+            -13.01692439263251,
+            55.821777435313834
+          ],
+          "nearest_target_point": [
+            24.137482922811206,
+            -12.940604903627808,
+            55.82809127185957
+          ],
+          "nearest_target_object": "Mesh_0"
+        }
+      ]
+    },
+    "candidate_to_source_boundary": {
+      "count": 2048,
+      "median": 0.004420524082915355,
+      "p95": 0.02765238539419415,
+      "p99": 0.047757941953561346,
+      "max": 0.08220363524111245,
+      "mean": 0.008148200531650319,
+      "rms": 0.012973846904348964,
+      "percent_of_source_diagonal": {
+        "median": 0.0017614673383068876,
+        "p95": 0.011018778041816203,
+        "p99": 0.01903033516344387,
+        "max": 0.03275607503801156
+      },
+      "raw_bvh_float_distance": {
+        "count": 2048,
+        "median": 0.0044203163124620914,
+        "p95": 0.027648787945508943,
+        "p99": 0.04775749020278454,
+        "max": 0.0822000503540039,
+        "mean": 0.008148329322313685,
+        "rms": 0.012973844182843497,
+        "percent_of_source_diagonal": {
+          "median": 0.0017613845470223195,
+          "p95": 0.011017344549261619,
+          "p99": 0.01903015515215483,
+          "max": 0.032754646550928405
+        }
+      },
+      "double_refined_queries": 2048,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.08220363524111245,
+          "sample_index": 1863,
+          "query_point": [
+            -13.70087505511436,
+            -5.428639116538078,
+            42.09679649011308
+          ],
+          "nearest_target_point": [
+            -13.737216949188614,
+            -5.428501178186186,
+            42.170530372114236
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08205660972710493,
+          "sample_index": 2011,
+          "query_point": [
+            -28.8154936112483,
+            -10.212233408294125,
+            25.5090823805141
+          ],
+          "nearest_target_point": [
+            -28.843376135632166,
+            -10.289405727495973,
+            25.50854835532968
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.06817201902120947,
+          "sample_index": 1574,
+          "query_point": [
+            -37.51929463869877,
+            40.83875274658203,
+            68.58379971394835
+          ],
+          "nearest_target_point": [
+            -37.51161066771843,
+            40.791340084117756,
+            68.63217760358246
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.0671583778218341,
+          "sample_index": 493,
+          "query_point": [
+            30.871617351723383,
+            -13.161952760714735,
+            71.68874932110481
+          ],
+          "nearest_target_point": [
+            30.871618384588807,
+            -13.180139377433969,
+            71.62410030964368
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.06649069543257932,
+          "sample_index": 101,
+          "query_point": [
+            74.51912016669397,
+            -12.802143598595716,
+            60.72662992080019
+          ],
+          "nearest_target_point": [
+            74.52056147997585,
+            -12.74928452979381,
+            60.686320442503806
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.06497934438867681,
+          "sample_index": 1179,
+          "query_point": [
+            -75.43617479157658,
+            37.6212162812729,
+            73.41742165255235
+          ],
+          "nearest_target_point": [
+            -75.45860163590977,
+            37.62068885618266,
+            73.35643744416025
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.060521182668512,
+          "sample_index": 1977,
+          "query_point": [
+            -75.54817918934572,
+            20.01592782718369,
+            22.146250348408838
+          ],
+          "nearest_target_point": [
+            -75.58848579041806,
+            19.98567174918754,
+            22.11274271933901
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.06037124519133002,
+          "sample_index": 860,
+          "query_point": [
+            75.58262350603925,
+            25.07868166032691,
+            16.679317264220078
+          ],
+          "nearest_target_point": [
+            75.533715463964,
+            25.084944683107935,
+            16.644482436648218
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.0594628701448172,
+          "sample_index": 2035,
+          "query_point": [
+            -28.34043528148664,
+            38.43990508261601,
+            25.394884002973292
+          ],
+          "nearest_target_point": [
+            -28.33018528306772,
+            38.498477358872215,
+            25.394641284127562
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.05943528370335666,
+          "sample_index": 367,
+          "query_point": [
+            13.34504094947314,
+            38.355374669309924,
+            77.65039143606533
+          ],
+          "nearest_target_point": [
+            13.370825557683867,
+            38.35205151004785,
+            77.70383920066627
+          ],
+          "nearest_target_object": "Mesh_0"
+        }
+      ]
+    },
+    "candidate_to_source_key_extremities": {
+      "count": 2104,
+      "median": 0.01172776239977686,
+      "p95": 0.053045149585732004,
+      "p99": 0.07825743024345512,
+      "max": 0.11945827455941514,
+      "mean": 0.01703285902079769,
+      "rms": 0.024731342766029476,
+      "percent_of_source_diagonal": {
+        "median": 0.004673217480812016,
+        "p95": 0.021137154033837487,
+        "p99": 0.03118361189037218,
+        "max": 0.04760110904952524
+      },
+      "raw_bvh_float_distance": {
+        "count": 2104,
+        "median": 0.011724738404154778,
+        "p95": 0.053043942525982844,
+        "p99": 0.07825788870453833,
+        "max": 0.11945851892232895,
+        "mean": 0.017032838596247737,
+        "rms": 0.024731345200647945,
+        "percent_of_source_diagonal": {
+          "median": 0.0046720124948376,
+          "p95": 0.02113667305097581,
+          "p99": 0.031183794575549047,
+          "max": 0.04760120642198228
+        }
+      },
+      "double_refined_queries": 2104,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 0.11945827455941514,
+          "sample_index": 701,
+          "query_point": [
+            -28.801063537597656,
+            -10.187929153442383,
+            29.520023345947266
+          ],
+          "nearest_target_point": [
+            -28.874552878502485,
+            -10.282107665589802,
+            29.51996022871515
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.10792545558259387,
+          "sample_index": 768,
+          "query_point": [
+            -23.715213775634766,
+            -17.715219497680664,
+            0.08936309814453125
+          ],
+          "nearest_target_point": [
+            -23.790305483425456,
+            -17.79273202442182,
+            0.09033653637552354
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.10515906316560315,
+          "sample_index": 901,
+          "query_point": [
+            -13.43622875213623,
+            7.221106052398682,
+            38.963932037353516
+          ],
+          "nearest_target_point": [
+            -13.507505332660276,
+            7.220962474822541,
+            39.04124993321305
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.09850574703597258,
+          "sample_index": 2043,
+          "query_point": [
+            78.95286560058594,
+            -49.535133361816406,
+            0.10966110229492188
+          ],
+          "nearest_target_point": [
+            78.9538405520262,
+            -49.43902165525779,
+            0.13122430083304573
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.09750232948293538,
+          "sample_index": 516,
+          "query_point": [
+            -50.327491760253906,
+            46.11597442626953,
+            -0.00052642822265625
+          ],
+          "nearest_target_point": [
+            -50.40123366901414,
+            46.148775842038845,
+            0.05418099604978558
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.09424834551922713,
+          "sample_index": 358,
+          "query_point": [
+            -71.23051452636719,
+            41.5433464050293,
+            118.35133361816406
+          ],
+          "nearest_target_point": [
+            -71.22695828297176,
+            41.47670738222531,
+            118.28478029814354
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.09221012525813167,
+          "sample_index": 333,
+          "query_point": [
+            -75.18843078613281,
+            0.7492594122886658,
+            123.79383087158203
+          ],
+          "nearest_target_point": [
+            -75.25430862723707,
+            0.7535395091797816,
+            123.8582086474225
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.091398643608869,
+          "sample_index": 10,
+          "query_point": [
+            -93.18898010253906,
+            -49.514835357666016,
+            10.371246337890625
+          ],
+          "nearest_target_point": [
+            -93.11331450924912,
+            -49.47849672323131,
+            10.407411703823284
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.0904638577193953,
+          "sample_index": 612,
+          "query_point": [
+            -39.45989227294922,
+            41.58684158325195,
+            41.327083587646484
+          ],
+          "nearest_target_point": [
+            -39.45892381487647,
+            41.49662308994537,
+            41.32049609131427
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 0.08995880835650852,
+          "sample_index": 339,
+          "query_point": [
+            -75.00575256347656,
+            -13.426752090454102,
+            30.929214477539062
+          ],
+          "nearest_target_point": [
+            -75.00630728890683,
+            -13.363919642039518,
+            30.993591203976873
+          ],
+          "nearest_target_object": "Mesh_0"
+        }
+      ]
+    },
+    "symmetric_surface_equal_direction_weight": {
+      "count": 40000,
+      "median": 0.008033914309395478,
+      "p95": 0.03379024710708032,
+      "p99": 0.05032653449973481,
+      "max": 0.10681557508536094,
+      "mean": 0.011427640780972333,
+      "rms": 0.015926804375156218,
+      "percent_of_source_diagonal": {
+        "median": 0.0032013121949611705,
+        "p95": 0.013464561105430468,
+        "p99": 0.020053854499757304,
+        "max": 0.04256331222411146
+      }
+    }
+  },
+  "self_checks": {
+    "source": {
+      "count": 20000,
+      "median": 0.0,
+      "p95": 1.4210854715202004e-14,
+      "p99": 1.464821375527116e-14,
+      "max": 2.8916994303251375e-14,
+      "mean": 2.2786514192763114e-15,
+      "rms": 4.8521854425259426e-15,
+      "percent_of_source_diagonal": {
+        "median": 0.0,
+        "p95": 5.662667131935196e-15,
+        "p99": 5.836943676920558e-15,
+        "max": 1.152269279202544e-14
+      },
+      "raw_bvh_float_distance": {
+        "count": 20000,
+        "median": 0.0,
+        "p95": 7.68876816437114e-06,
+        "p99": 2.038878323219226e-05,
+        "max": 0.0011100900592282414,
+        "mean": 2.282138023270619e-06,
+        "rms": 1.1756740809210683e-05,
+        "percent_of_source_diagonal": {
+          "median": 0.0,
+          "p95": 3.0637801625597207e-06,
+          "p99": 8.124415806290607e-06,
+          "max": 0.0004423428863258492
+        }
+      },
+      "double_refined_queries": 20000,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 2.8916994303251375e-14,
+          "sample_index": 15974,
+          "query_point": [
+            13.08117825898441,
+            1.0116742865129282,
+            105.02650881791578
+          ],
+          "nearest_target_point": [
+            13.081178258984416,
+            1.0116742865129282,
+            105.02650881791581
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.864289338439558e-14,
+          "sample_index": 9997,
+          "query_point": [
+            -13.150273191029326,
+            -10.715105184494954,
+            113.54446014538522
+          ],
+          "nearest_target_point": [
+            -13.150273191029322,
+            -10.715105184494954,
+            113.54446014538524
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 17138,
+          "query_point": [
+            65.49376811612909,
+            -3.447287434835438,
+            126.51794083397414
+          ],
+          "nearest_target_point": [
+            65.49376811612909,
+            -3.447287434835438,
+            126.51794083397411
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 12750,
+          "query_point": [
+            -65.40339568605748,
+            10.00832566842099,
+            126.51668342301093
+          ],
+          "nearest_target_point": [
+            -65.40339568605748,
+            10.00832566842099,
+            126.51668342301096
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 11435,
+          "query_point": [
+            58.83360802287774,
+            39.985227863157036,
+            124.16590667585146
+          ],
+          "nearest_target_point": [
+            58.83360802287774,
+            39.985227863157036,
+            124.16590667585149
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 11122,
+          "query_point": [
+            -76.06449243966641,
+            32.98500406878499,
+            97.8185975070597
+          ],
+          "nearest_target_point": [
+            -76.06449243966641,
+            32.98500406878499,
+            97.81859750705974
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 9836,
+          "query_point": [
+            -36.79122617858593,
+            -5.679029666640887,
+            122.6277789186754
+          ],
+          "nearest_target_point": [
+            -36.79122617858593,
+            -5.679029666640887,
+            122.62777891867543
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 8459,
+          "query_point": [
+            -21.34843330320265,
+            41.02846949069138,
+            97.82674406225459
+          ],
+          "nearest_target_point": [
+            -21.34843330320265,
+            41.02846949069138,
+            97.82674406225456
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 981,
+          "query_point": [
+            -52.819192138782824,
+            24.211593711178647,
+            126.39539663570332
+          ],
+          "nearest_target_point": [
+            -52.819192138782824,
+            24.211593711178647,
+            126.39539663570329
+          ],
+          "nearest_target_object": "Mesh_0"
+        },
+        {
+          "distance": 2.010208941128915e-14,
+          "sample_index": 15294,
+          "query_point": [
+            75.95099269111567,
+            -2.5433109792532593,
+            75.05363817698256
+          ],
+          "nearest_target_point": [
+            75.95099269111566,
+            -2.5433109792532598,
+            75.05363817698255
+          ],
+          "nearest_target_object": "Mesh_0"
+        }
+      ],
+      "tolerance": 0.0005019138290880077,
+      "within_tolerance": true
+    },
+    "candidate": {
+      "count": 20000,
+      "median": 0.0,
+      "p95": 1.4210854715202004e-14,
+      "p99": 1.464821375527116e-14,
+      "max": 2.929642751054232e-14,
+      "mean": 2.4083708175064738e-15,
+      "rms": 5.088034762530984e-15,
+      "percent_of_source_diagonal": {
+        "median": 0.0,
+        "p95": 5.662667131935196e-15,
+        "p99": 5.836943676920558e-15,
+        "max": 1.1673887353841117e-14
+      },
+      "raw_bvh_float_distance": {
+        "count": 20000,
+        "median": 9.5367431640625e-07,
+        "p95": 2.2773654563934542e-05,
+        "p99": 0.00018310556813958098,
+        "max": 0.0070809111930429935,
+        "mean": 1.4699938117398404e-05,
+        "rms": 0.0001680460751053878,
+        "percent_of_source_diagonal": {
+          "median": 3.8001515843430915e-07,
+          "p95": 9.074726873063031e-06,
+          "p99": 7.296295002362824e-05,
+          "max": 0.0028215644928171113
+        }
+      },
+      "double_refined_queries": 20000,
+      "refinement_search_guard": 0.2509569145440038,
+      "worst_samples": [
+        {
+          "distance": 2.929642751054232e-14,
+          "sample_index": 12172,
+          "query_point": [
+            -47.2348338019793,
+            40.93703589431512,
+            119.74619894901411
+          ],
+          "nearest_target_point": [
+            -47.2348338019793,
+            40.937035894315116,
+            119.74619894901409
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.929642751054232e-14,
+          "sample_index": 3888,
+          "query_point": [
+            16.791330161678413,
+            39.067054525755,
+            116.99679188960523
+          ],
+          "nearest_target_point": [
+            16.791330161678413,
+            39.067054525755005,
+            116.99679188960526
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 2.8643108549553355e-14,
+          "sample_index": 13309,
+          "query_point": [
+            -14.341743308631692,
+            0.6010064117391505,
+            84.16330551397778
+          ],
+          "nearest_target_point": [
+            -14.341743308631688,
+            0.6010064117391504,
+            84.16330551397775
+          ],
+          "nearest_target_object": "West facade and core"
+        },
+        {
+          "distance": 2.847716647714797e-14,
+          "sample_index": 6116,
+          "query_point": [
+            13.947638294550938,
+            30.213640084746668,
+            89.64522683891568
+          ],
+          "nearest_target_point": [
+            13.94763829455094,
+            30.213640084746668,
+            89.6452268389157
+          ],
+          "nearest_target_object": "East facade and core"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 12358,
+          "query_point": [
+            -59.366217608247055,
+            -5.350588372644156,
+            126.51044644265073
+          ],
+          "nearest_target_point": [
+            -59.366217608247055,
+            -5.350588372644156,
+            126.5104464426507
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 12145,
+          "query_point": [
+            -75.3525514502015,
+            35.39069106744931,
+            121.72671875984447
+          ],
+          "nearest_target_point": [
+            -75.35255145020153,
+            35.39069106744931,
+            121.72671875984447
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 11914,
+          "query_point": [
+            -45.300753109412916,
+            40.93543916725787,
+            121.06720458689617
+          ],
+          "nearest_target_point": [
+            -45.300753109412916,
+            40.93543916725787,
+            121.0672045868962
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 11885,
+          "query_point": [
+            -75.86432514843486,
+            9.301614434609029,
+            121.17594898103098
+          ],
+          "nearest_target_point": [
+            -75.86432514843486,
+            9.301614434609029,
+            121.17594898103096
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 11813,
+          "query_point": [
+            -49.63376503579754,
+            38.57939839072655,
+            126.51236655192542
+          ],
+          "nearest_target_point": [
+            -49.63376503579754,
+            38.57939839072655,
+            126.51236655192545
+          ],
+          "nearest_target_object": "West crown"
+        },
+        {
+          "distance": 2.842170943040401e-14,
+          "sample_index": 10471,
+          "query_point": [
+            88.49169502149874,
+            -22.481731159421685,
+            11.282359059279909
+          ],
+          "nearest_target_point": [
+            88.49169502149871,
+            -22.481731159421685,
+            11.282359059279909
+          ],
+          "nearest_target_object": "Front stepped podium"
+        }
+      ],
+      "tolerance": 0.0005019138290880077,
+      "within_tolerance": true
+    },
+    "all_within_tolerance": true
+  },
+  "limitations": [
+    "The maximum is the largest measured sample/probe error, not an exhaustive or certified Hausdorff distance.",
+    "Area-weighted metrics can underrepresent small but important architectural features; boundary and local extremity probes reduce, but cannot eliminate, this risk.",
+    "Unsigned nearest distances do not prove matching topology, semantic correspondence, watertightness, material appearance or texture/normal fidelity.",
+    "All positive-area triangles are included, including internal/occluded faces, disconnected fragments and overlapping surfaces; vertices without area are represented only if selected as extremities.",
+    "Boundaries are topological, not inferred architectural creases or image silhouettes; unwelded seams may inflate their number.",
+    "Imported vertex coordinates have Blender float precision; float64 refinement measures those imported triangles. Tiny self residuals do not imply physical/survey precision or a certified global nearest bound.",
+    "Float64 refinement examines BVH nearest-range hits within raw nearest distance plus 0.1% of source diagonal. This empirically repairs slender-triangle precision errors; it is not a proof that the float BVH supplied every globally relevant face. Raw float distance aggregates are retained for every category and self-check.",
+    "No registration, best-fit alignment or geometry simplification is performed. Alignment and scale errors remain in the distances."
+  ],
+  "elapsed_seconds": 27.141214799999943,
+  "provenance": {
+    "measurement_script": "measure_geometry.py",
+    "measurement_script_sha256": "9834d5a6ce2eb5aaa3b8c8321fa70ebeaf3c19313898758b408f5ad76459543f",
+    "source_and_candidate_paths": "Basenames only; SHA-256 identifies the measured artifacts"
+  },
+  "reporting_precision_note": "Float64 refinement measures imported float32 triangle surfaces. Tiny self residuals demonstrate numerical self-consistency; they do not imply physical/survey accuracy or certified nearest bounds."
+}

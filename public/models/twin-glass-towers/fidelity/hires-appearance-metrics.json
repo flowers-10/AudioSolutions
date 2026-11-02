@@ -1,0 +1,40 @@
+{
+  "method": "Raw 8-bit sRGB PNG RGB errors on union of opaque geometry masks. SSIM: luminance, nonoverlapping 8x8 blocks >90% inside overlapping masks, population variance, C1=.01^2 C2=.03^2.",
+  "limitations": "Measures this lighting and these cameras only; visibility, geometry, normals and textures all contribute. Not a universal perceptual fidelity score. Inspect crops alongside metrics.",
+  "views": {
+    "front-oblique": {
+      "mean_absolute_srgb_error_0_255": 6.3466081619262695,
+      "rmse_srgb_0_255": 11.512710571289062,
+      "psnr_db": 26.907251875330083,
+      "p95_per_pixel_max_channel_error_0_255": 29.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.12522500660279257,
+      "windowed_luminance_ssim_8x8": 0.884907825098176
+    },
+    "back-oblique": {
+      "mean_absolute_srgb_error_0_255": 4.029200077056885,
+      "rmse_srgb_0_255": 6.926163673400879,
+      "psnr_db": 31.32094860418806,
+      "p95_per_pixel_max_channel_error_0_255": 19.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.06335471326831588,
+      "windowed_luminance_ssim_8x8": 0.9393566288694889
+    },
+    "top": {
+      "mean_absolute_srgb_error_0_255": 5.856647968292236,
+      "rmse_srgb_0_255": 12.139971733093262,
+      "psnr_db": 26.446450098236845,
+      "p95_per_pixel_max_channel_error_0_255": 34.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.11597281508716999,
+      "windowed_luminance_ssim_8x8": 0.9241856472072223
+    },
+    "left": {
+      "mean_absolute_srgb_error_0_255": 10.272759437561035,
+      "rmse_srgb_0_255": 19.04493522644043,
+      "psnr_db": 22.535213610191448,
+      "p95_per_pixel_max_channel_error_0_255": 56.0,
+      "fraction_pixels_with_max_channel_error_over_16": 0.22473121254884598,
+      "windowed_luminance_ssim_8x8": 0.8191180622224604
+    }
+  },
+  "mean_mae_0_255": 6.6263039112091064,
+  "mean_ssim": 0.8918920408493369
+}

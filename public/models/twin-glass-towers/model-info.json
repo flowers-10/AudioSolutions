@@ -1,19 +1,71 @@
 {
+  "version": 2,
   "generator": "Blender 4.5.15 LTS",
   "units": "metres (inferred)",
-  "triangles": 38312,
-  "meshObjects": 18,
-  "materials": 16,
-  "glbBytes": 2015224,
+  "triangles": 1305552,
+  "meshObjects": 8,
+  "materials": 1,
   "sourceTriangles": 4351840,
   "sourceBytes": 172082328,
-  "towerWidth": 63.0,
-  "towerDepth": 55.0,
-  "towerTop": 126.0,
-  "facadeFloors": 40,
+  "sourceName": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+  "sourceSHA256": "ed5fbf58491a0065b037d49d11c2a7bd26efe6e0149dd669496ea3bb655536aa",
+  "reconstruction": {
+    "method": "source-constrained-retopology",
+    "collapseRatio": 0.3,
+    "verticesClampedToSourceBounds": 13,
+    "preserved": [
+      "source silhouette and architectural relief",
+      "original UV coordinates through interpolation",
+      "original 2048px base color image",
+      "original 2048px metallic/roughness image",
+      "original 2048px tangent normal image"
+    ],
+    "editableZones": [
+      "East crown",
+      "Front stepped podium",
+      "West podium wing",
+      "West facade and core",
+      "West crown",
+      "Central connecting podium",
+      "East facade and core",
+      "East podium wing"
+    ],
+    "storage": "16-bit geometry, floating-point UV, source images copied without recompression"
+  },
   "notes": [
-    "Reference silhouette reconstructed from supplied Meshy model; no survey or original design drawings.",
-    "Panel divisions and service louvres are interpreted architectural details.",
-    "No source geometry, baked textures, cameras, lights or environment maps in GLB."
-  ]
+    "Retopology of the supplied mesh; not a newly invented parametric building.",
+    "No speculative windows, roof seams, service grilles or podium tiers.",
+    "Small geometric/shading changes are measured in the accompanying fidelity report."
+  ],
+  "glbBytes": 59903696,
+  "glbSHA256": "53c4445e70451b80b4d1743435d7119376e1f91e4a334a43814bffd551e04bed",
+  "textures": [
+    {
+      "mimeType": "image/jpeg",
+      "sha256": "67394093a7c0b1f34034c7914b9b509e304746879308d10acb73fe3a61b68077",
+      "bytes": 2372447
+    },
+    {
+      "mimeType": "image/jpeg",
+      "sha256": "e229f456deea1e8e53e4246dbdf823beccf44340c29e04c3da7cca8f09697be3",
+      "bytes": 3181517
+    },
+    {
+      "mimeType": "image/jpeg",
+      "sha256": "8af8616fdeb0c4337a4309da660469fb0ea8cb9eee1ed78e5dacd7de99b9a1dc",
+      "bytes": 2008064
+    }
+  ],
+  "bounds": {
+    "min": [
+      -95.05919647216797,
+      -0.0005237218330691462,
+      -52.25726731145778
+    ],
+    "max": [
+      94.96139526367188,
+      126.53102604116901,
+      51.95917160833278
+    ]
+  }
 }

@@ -2,7 +2,7 @@
 
 ## 建筑模型资源
 
-新增的双塔幕墙建筑模型独立保存在 [`models/twin-glass-towers/`](./models/twin-glass-towers/README.md)，包含 Blender 可编辑源文件、重建脚本和 Three.js 集成说明。轻量 GLB、ThreeAuto Creator 项目包及静态演示位于 [`public/models/twin-glass-towers/`](./public/models/twin-glass-towers/)。原有音频应用入口及依赖保持不变。
+双塔幕墙建筑采用原网格约束重拓扑，保留原始 UV 和三张 2K PBR 贴图。可编辑 Blender 文件、处理脚本及 Three.js 集成说明位于 [`models/twin-glass-towers/`](./models/twin-glass-towers/README.md)；交付 GLB、ThreeAuto Creator 项目、静态演示与原模型对照报告位于 [`public/models/twin-glass-towers/`](./public/models/twin-glass-towers/)。原有音频应用入口及依赖保持不变。
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 

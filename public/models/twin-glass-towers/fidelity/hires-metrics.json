@@ -1,0 +1,189 @@
+{
+  "source": {
+    "path": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+    "scale": 100.0,
+    "offset": [
+      0,
+      0,
+      63.785398
+    ],
+    "raw_bounds": [
+      [
+        -0.9505919814109802,
+        -0.5196040272712708,
+        -0.6378539800643921
+      ],
+      [
+        0.9496139883995056,
+        0.5225849747657776,
+        0.6274510025978088
+      ]
+    ],
+    "bounds": [
+      [
+        -95.05919647216797,
+        -51.96040344238281,
+        0.0
+      ],
+      [
+        94.96139526367188,
+        52.25849914550781,
+        126.53050231933594
+      ]
+    ],
+    "mesh_count": 1,
+    "vertices": 3509250,
+    "triangles": 4351840
+  },
+  "candidate": {
+    "path": "twin-glass-towers.glb",
+    "scale": 1.0,
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "raw_bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "mesh_count": 8,
+    "vertices": 1545015,
+    "triangles": 1305552
+  },
+  "render": {
+    "engine": "BLENDER_EEVEE_NEXT",
+    "width": 2400,
+    "height": 2000,
+    "samples": 64,
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "materials": "unaltered GLB import for PBR; opaque emission only for masks",
+    "mask_threshold_alpha": 0.5,
+    "outline_tolerance_pixels": 2,
+    "diagnostic_legend": {
+      "gray": "overlap",
+      "red": "source only / missing",
+      "blue": "candidate only / extra"
+    }
+  },
+  "views": {
+    "front-oblique": {
+      "camera": {
+        "location": [
+          377.68719482421875,
+          -566.455078125,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.1302114725112915,
+          -7.703637550093845e-08,
+          0.5880025625228882
+        ],
+        "ortho_scale": 259.2218933105469
+      },
+      "silhouette_iou": 0.9995458448212178,
+      "silhouette_xor_pixels": 932,
+      "source_area_pixels": 2051423,
+      "candidate_area_pixels": 2051969,
+      "source_missing_fraction": 9.408103545685117e-05,
+      "candidate_extra_fraction": 0.00036014189298181406,
+      "outline_source_coverage_within_2px": 0.9940174274938224,
+      "outline_candidate_coverage_within_2px": 0.9965950759559979,
+      "outline_unmatched_pixels": 72
+    },
+    "back-oblique": {
+      "camera": {
+        "location": [
+          -377.78497314453125,
+          566.753173828125,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.130211591720581,
+          9.158705438494508e-08,
+          -2.5535900592803955
+        ],
+        "ortho_scale": 259.2218017578125
+      },
+      "silhouette_iou": 0.9994814024412993,
+      "silhouette_xor_pixels": 973,
+      "source_area_pixels": 1875430,
+      "candidate_area_pixels": 1876025,
+      "source_missing_fraction": 0.00010077688850023728,
+      "candidate_extra_fraction": 0.00041790487866632907,
+      "outline_source_coverage_within_2px": 0.9977267560809275,
+      "outline_candidate_coverage_within_2px": 0.9956630906185803,
+      "outline_unmatched_pixels": 58
+    },
+    "top": {
+      "camera": {
+        "location": [
+          -0.048900604248046875,
+          -0.03916984796524048,
+          816.1360473632812
+        ],
+        "rotation_euler": [
+          0.0003452669479884207,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale": 209.0226593017578
+      },
+      "silhouette_iou": 0.9997980963756284,
+      "silhouette_xor_pixels": 451,
+      "source_area_pixels": 2233533,
+      "candidate_area_pixels": 2233494,
+      "source_missing_fraction": 0.00010969168577316745,
+      "candidate_extra_fraction": 9.223217076025277e-05,
+      "outline_source_coverage_within_2px": 1.0,
+      "outline_candidate_coverage_within_2px": 1.0,
+      "outline_unmatched_pixels": 0
+    },
+    "left": {
+      "camera": {
+        "location": [
+          -752.919677734375,
+          0.1490478515625,
+          63.26525115966797
+        ],
+        "rotation_euler": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "ortho_scale": 167.02027893066406
+      },
+      "silhouette_iou": 0.999402933680136,
+      "silhouette_xor_pixels": 971,
+      "source_area_pixels": 1625762,
+      "candidate_area_pixels": 1625837,
+      "source_missing_fraction": 0.0002755630898003521,
+      "candidate_extra_fraction": 0.0003216804636627165,
+      "outline_source_coverage_within_2px": 1.0,
+      "outline_candidate_coverage_within_2px": 1.0,
+      "outline_unmatched_pixels": 0
+    }
+  },
+  "mean_silhouette_iou": 0.9995570693295703
+}

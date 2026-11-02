@@ -1,0 +1,356 @@
+{
+  "source": {
+    "path": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+    "scale": 100.0,
+    "offset": [
+      0,
+      0,
+      63.785398
+    ],
+    "raw_bounds": [
+      [
+        -0.9505919814109802,
+        -0.5196040272712708,
+        -0.6378539800643921
+      ],
+      [
+        0.9496139883995056,
+        0.5225849747657776,
+        0.6274510025978088
+      ]
+    ],
+    "bounds": [
+      [
+        -95.05919647216797,
+        -51.96040344238281,
+        0.0
+      ],
+      [
+        94.96139526367188,
+        52.25849914550781,
+        126.53050231933594
+      ]
+    ],
+    "mesh_count": 1,
+    "vertices": 3509250,
+    "triangles": 4351840
+  },
+  "candidate": {
+    "path": "twin-glass-towers.glb",
+    "scale": 1.0,
+    "offset": [
+      0,
+      0,
+      0
+    ],
+    "raw_bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "bounds": [
+      [
+        -95.0592041015625,
+        -51.95917510986328,
+        -0.00052642822265625
+      ],
+      [
+        94.96139526367188,
+        52.25727081298828,
+        126.5310287475586
+      ]
+    ],
+    "mesh_count": 8,
+    "vertices": 1545015,
+    "triangles": 1305552
+  },
+  "render": {
+    "engine": "BLENDER_EEVEE_NEXT",
+    "width": 1200,
+    "height": 1000,
+    "samples": 32,
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "materials": "unaltered GLB import for PBR; opaque emission only for masks",
+    "mask_threshold_alpha": 0.5,
+    "outline_tolerance_pixels": 2,
+    "diagnostic_legend": {
+      "gray": "overlap",
+      "red": "source only / missing",
+      "blue": "candidate only / extra"
+    }
+  },
+  "views": {
+    "front-oblique": {
+      "camera": {
+        "location": [
+          377.68719482421875,
+          -566.455078125,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.1302114725112915,
+          -7.703637550093845e-08,
+          0.5880025625228882
+        ],
+        "ortho_scale": 259.2218933105469
+      },
+      "silhouette_iou": 0.9996101356922723,
+      "silhouette_xor_pixels": 200,
+      "source_area_pixels": 512834,
+      "candidate_area_pixels": 512964,
+      "source_missing_fraction": 6.82482050722066e-05,
+      "candidate_extra_fraction": 0.0003216599995321309,
+      "outline_source_coverage_within_2px": 0.9956873315363881,
+      "outline_candidate_coverage_within_2px": 0.9978254960587116,
+      "outline_unmatched_pixels": 24
+    },
+    "back-oblique": {
+      "camera": {
+        "location": [
+          -377.78497314453125,
+          566.753173828125,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.130211591720581,
+          9.158705438494508e-08,
+          -2.5535900592803955
+        ],
+        "ortho_scale": 259.2218017578125
+      },
+      "silhouette_iou": 0.9995309718476512,
+      "silhouette_xor_pixels": 220,
+      "source_area_pixels": 468878,
+      "candidate_area_pixels": 469012,
+      "source_missing_fraction": 9.170829085604358e-05,
+      "candidate_extra_fraction": 0.0003773890646721193,
+      "outline_source_coverage_within_2px": 0.9985812248758572,
+      "outline_candidate_coverage_within_2px": 0.9990516832622096,
+      "outline_unmatched_pixels": 10
+    },
+    "top": {
+      "camera": {
+        "location": [
+          -0.048900604248046875,
+          -0.03916984796524048,
+          816.1360473632812
+        ],
+        "rotation_euler": [
+          0.0003452669479884207,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale": 209.0226593017578
+      },
+      "silhouette_iou": 0.9999015328647491,
+      "silhouette_xor_pixels": 55,
+      "source_area_pixels": 558533,
+      "candidate_area_pixels": 558536,
+      "source_missing_fraction": 4.655051715834158e-05,
+      "candidate_extra_fraction": 5.1921451795408e-05,
+      "outline_source_coverage_within_2px": 1.0,
+      "outline_candidate_coverage_within_2px": 0.9988851727982163,
+      "outline_unmatched_pixels": 4
+    },
+    "front": {
+      "camera": {
+        "location": [
+          -0.048900604248046875,
+          -752.7217407226562,
+          63.26525115966797
+        ],
+        "rotation_euler": [
+          1.570796251296997,
+          -0.0,
+          0.0
+        ],
+        "ortho_scale": 209.0226593017578
+      },
+      "silhouette_iou": 0.9987278589548642,
+      "silhouette_xor_pixels": 681,
+      "source_area_pixels": 535030,
+      "candidate_area_pixels": 534925,
+      "source_missing_fraction": 0.000734538250191578,
+      "candidate_extra_fraction": 0.0005383932326961724,
+      "outline_source_coverage_within_2px": 0.9988315481986368,
+      "outline_candidate_coverage_within_2px": 0.9961123529983478,
+      "outline_unmatched_pixels": 52
+    },
+    "back": {
+      "camera": {
+        "location": [
+          -0.048900604248046875,
+          753.0198364257812,
+          63.26525115966797
+        ],
+        "rotation_euler": [
+          1.570796251296997,
+          8.742279788975793e-08,
+          3.1415927410125732
+        ],
+        "ortho_scale": 209.02267456054688
+      },
+      "silhouette_iou": 0.9987278565784385,
+      "silhouette_xor_pixels": 681,
+      "source_area_pixels": 535030,
+      "candidate_area_pixels": 534923,
+      "source_missing_fraction": 0.0007364073042633124,
+      "candidate_extra_fraction": 0.000536525817734515,
+      "outline_source_coverage_within_2px": 0.9988315481986368,
+      "outline_candidate_coverage_within_2px": 0.9961127308066083,
+      "outline_unmatched_pixels": 52
+    },
+    "left": {
+      "camera": {
+        "location": [
+          -752.919677734375,
+          0.1490478515625,
+          63.26525115966797
+        ],
+        "rotation_euler": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "ortho_scale": 167.02027893066406
+      },
+      "silhouette_iou": 0.9996724904271168,
+      "silhouette_xor_pixels": 133,
+      "source_area_pixels": 406012,
+      "candidate_area_pixels": 406045,
+      "source_missing_fraction": 0.00012314906948563098,
+      "candidate_extra_fraction": 0.0002044108411629253,
+      "outline_source_coverage_within_2px": 0.9977358490566037,
+      "outline_candidate_coverage_within_2px": 1.0,
+      "outline_unmatched_pixels": 9
+    },
+    "right": {
+      "camera": {
+        "location": [
+          752.8218994140625,
+          0.1490478515625,
+          63.26525115966797
+        ],
+        "rotation_euler": [
+          1.5707963705062866,
+          -0.0,
+          1.5707963705062866
+        ],
+        "ortho_scale": 167.02027893066406
+      },
+      "silhouette_iou": 0.9996724904271168,
+      "silhouette_xor_pixels": 133,
+      "source_area_pixels": 406012,
+      "candidate_area_pixels": 406045,
+      "source_missing_fraction": 0.00012314906948563098,
+      "candidate_extra_fraction": 0.0002044108411629253,
+      "outline_source_coverage_within_2px": 0.9977358490566037,
+      "outline_candidate_coverage_within_2px": 1.0,
+      "outline_unmatched_pixels": 9
+    },
+    "left-oblique": {
+      "camera": {
+        "location": [
+          -566.6530151367188,
+          -377.5870361328125,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.1302114725112915,
+          5.768495370261917e-08,
+          -0.9827936291694641
+        ],
+        "ortho_scale": 272.6181640625
+      },
+      "silhouette_iou": 0.9995123193944025,
+      "silhouette_xor_pixels": 201,
+      "source_area_pixels": 411987,
+      "candidate_area_pixels": 412122,
+      "source_missing_fraction": 8.009961479367068e-05,
+      "candidate_extra_fraction": 0.00040764627949975977,
+      "outline_source_coverage_within_2px": 1.0,
+      "outline_candidate_coverage_within_2px": 0.9938518290808485,
+      "outline_unmatched_pixels": 20
+    },
+    "right-oblique": {
+      "camera": {
+        "location": [
+          566.5552368164062,
+          377.8851318359375,
+          384.3409423828125
+        ],
+        "rotation_euler": [
+          1.1302117109298706,
+          1.4445955542896627e-08,
+          2.158798933029175
+        ],
+        "ortho_scale": 272.61810302734375
+      },
+      "silhouette_iou": 0.9993147205435668,
+      "silhouette_xor_pixels": 259,
+      "source_area_pixels": 377725,
+      "candidate_area_pixels": 377912,
+      "source_missing_fraction": 9.530743265603283e-05,
+      "candidate_extra_fraction": 0.0005900844641080463,
+      "outline_source_coverage_within_2px": 0.9971615100766392,
+      "outline_candidate_coverage_within_2px": 0.9943214082907439,
+      "outline_unmatched_pixels": 30
+    }
+  },
+  "mean_silhouette_iou": 0.9994078196366866,
+  "artifact": {
+    "source_name": "Meshy_AI_Twin_Glass_Towers_1101141931_texture.glb",
+    "source_sha256": "ed5fbf58491a0065b037d49d11c2a7bd26efe6e0149dd669496ea3bb655536aa",
+    "candidate_name": "twin-glass-towers.glb",
+    "candidate_sha256": "53c4445e70451b80b4d1743435d7119376e1f91e4a334a43814bffd551e04bed",
+    "candidate_bytes": 59903696,
+    "textures": [
+      {
+        "mimeType": "image/jpeg",
+        "sha256": "67394093a7c0b1f34034c7914b9b509e304746879308d10acb73fe3a61b68077",
+        "bytes": 2372447
+      },
+      {
+        "mimeType": "image/jpeg",
+        "sha256": "e229f456deea1e8e53e4246dbdf823beccf44340c29e04c3da7cca8f09697be3",
+        "bytes": 3181517
+      },
+      {
+        "mimeType": "image/jpeg",
+        "sha256": "8af8616fdeb0c4337a4309da660469fb0ea8cb9eee1ed78e5dacd7de99b9a1dc",
+        "bytes": 2008064
+      }
+    ],
+    "reconstruction": {
+      "method": "source-constrained-retopology",
+      "collapseRatio": 0.3,
+      "verticesClampedToSourceBounds": 13,
+      "preserved": [
+        "source silhouette and architectural relief",
+        "original UV coordinates through interpolation",
+        "original 2048px base color image",
+        "original 2048px metallic/roughness image",
+        "original 2048px tangent normal image"
+      ],
+      "editableZones": [
+        "East crown",
+        "Front stepped podium",
+        "West podium wing",
+        "West facade and core",
+        "West crown",
+        "Central connecting podium",
+        "East facade and core",
+        "East podium wing"
+      ],
+      "storage": "16-bit geometry, floating-point UV, source images copied without recompression"
+    }
+  }
+}
